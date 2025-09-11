@@ -1,0 +1,5 @@
+#!/bin/sh
+
+./gradlew --no-daemon spotlessCheck || { echo "Spotless failed. Run ./gradlew spotlessApply"; exit 1; }
+./gradlew --no-daemon checkstyleMain || { echo "Checkstyle failed"; exit 1; }
+./gradlew --no-daemon pmdMain || { echo "PMD failed"; exit 1; }
