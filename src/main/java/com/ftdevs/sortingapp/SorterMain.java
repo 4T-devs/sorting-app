@@ -8,13 +8,14 @@ public final class SorterMain {
     public static void main(String[] args) {
         ApplicationContext context = new ApplicationContext();
 
-        Scanner scanner = new Scanner(System.in);
-        while (context.exitFlag){
-            context.printMenu();
-            context.input = scanner.nextLine();
-            if(!context.handle())
-                context.printError();
-        }
-        scanner.close();
+        try(Scanner scanner = new Scanner(System.in)){
+            while (context.exitFlag){
+                context.printMenu();
+                context.input = scanner.nextLine();
+                if(!context.handle())
+                    context.printError();
+            }
+        } catch (Exception ex) { }
+        System.out.println("END");
     }
 }
