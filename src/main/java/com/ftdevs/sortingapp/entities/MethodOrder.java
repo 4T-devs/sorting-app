@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface FieldOrder {
+@Target(ElementType.METHOD)
+public @interface MethodOrder {
     int value();
 }

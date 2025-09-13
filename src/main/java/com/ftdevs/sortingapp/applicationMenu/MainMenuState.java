@@ -6,7 +6,7 @@ import org.example.validation.InputValidator;
 public class MainMenuState extends MenuInputState {
 
     @Override
-    public boolean hold(ApplicationContext context) { //Главное меню
+    public boolean handle(ApplicationContext context) { //Главное меню
         Integer input = InputValidator.tryParseInteger(context.input);
         if(input == null){
             this.errorMessage = "Неверный формат вводимых данных";

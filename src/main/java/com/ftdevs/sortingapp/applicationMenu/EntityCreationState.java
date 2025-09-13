@@ -1,11 +1,14 @@
 package org.example.applicationMenu;
 
 import org.example.ApplicationContext;
+import org.example.entityCreators.FileReader;
+import org.example.entityCreators.HandInput;
+import org.example.entityCreators.RandomCreator;
 import org.example.validation.InputValidator;
 
 public class EntityCreationState extends MenuInputState { //Меню выбора способа создания сущностей
     @Override
-    public boolean hold(ApplicationContext context) {
+    public boolean handle(ApplicationContext context) {
         Integer input = InputValidator.tryParseInteger(context.input);
         if(input == null){
             this.errorMessage = "Неверный формат вводимых данных";
@@ -14,13 +17,13 @@ public class EntityCreationState extends MenuInputState { //Меню выбор�
 
         switch (input){
             case 1 -> { //Чтение объектов из файла
-                return true;
+                context.creationStrategy = new FileReader();
             }
             case 2 -> { //Случайная генерация объектов
-                return true;
+                context.creationStrategy = new RandomCreator();
             }
             case 3 -> { //Ручное заполнение объектов
-                return true;
+                context.creationStrategy = new HandInput();
             }
             case 4 -> {
                 context.setState(new MainMenuState());
@@ -31,6 +34,8 @@ public class EntityCreationState extends MenuInputState { //Меню выбор�
                 return false;
             }
         }
+        context.setState(new EntityCreationConfigState(context.creationStrategy.getMessage()));
+        return true;
     }
     public EntityCreationState(){
         StringBuilder sb = new StringBuilder();

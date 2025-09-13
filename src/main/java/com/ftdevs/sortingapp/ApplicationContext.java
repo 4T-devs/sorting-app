@@ -2,6 +2,9 @@ package org.example;
 
 import org.example.applicationMenu.MainMenuState;
 import org.example.applicationMenu.MenuInputState;
+import org.example.entities.Builder;
+import org.example.entities.Entity;
+import org.example.entityCreators.ICreationStrategy;
 import org.example.sorting.ISortStrategy;
 
 public class ApplicationContext {
@@ -13,8 +16,12 @@ public class ApplicationContext {
 
     public ISortStrategy sortStrategy;
 
-    public boolean hold(){
-        return state.hold(this);
+    public ICreationStrategy creationStrategy;
+
+    public Class<? extends Builder> entityType;
+
+    public boolean handle(){
+        return state.handle(this);
     }
 
     public void setState(MenuInputState state){
@@ -27,7 +34,7 @@ public class ApplicationContext {
 
     public ApplicationContext(){
         state = new MainMenuState();
-
+        entityType = Entity.EntityBuilder.class;
     }
 
     public void printObjects(){

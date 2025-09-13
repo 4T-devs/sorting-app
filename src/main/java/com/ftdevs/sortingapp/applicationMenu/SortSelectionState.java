@@ -7,7 +7,7 @@ public class SortSelectionState extends MenuInputState { //Меню выбора
 
 
     @Override
-    public boolean hold(ApplicationContext context) {
+    public boolean handle(ApplicationContext context) {
         Integer input = InputValidator.tryParseInteger(context.input);
         if(input == null){
             this.errorMessage = "Неверный формат вводимых данных";

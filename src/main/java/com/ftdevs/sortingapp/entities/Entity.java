@@ -16,31 +16,37 @@ public class Entity {
         weight = builder.weight;
         height = builder.height;
     }
-    public static class EntityBuilder extends Builder{
-        private Integer age;
-        private Float weight;
-        private Double height;
+    public static class EntityBuilder extends Builder<Entity>{
+
         @FieldOrder(1)
+        private Integer age;
+        @FieldOrder(2)
+        private Float weight;
+        @FieldOrder(3)
+        private Double height;
+
+        @MethodOrder(1)
         public EntityBuilder setAge(String age){
             var input = InputValidator.tryParseInteger(age);
             this.age = input != null ? input : 0;
             return this;
         }
-        @FieldOrder(2)
+        @MethodOrder(2)
         public EntityBuilder setWeight(String weight){
             var input = InputValidator.tryParseFloat(weight);
             this.weight = input != null ? input : 0f;
             return this;
         }
-        @FieldOrder(3)
+        @MethodOrder(3)
         public EntityBuilder setHeight(String height){
             var input = InputValidator.tryParseDouble(height);
             this.height = input != null ? input : 0d;
             return this;
         }
 
+        @Override
         public Entity build(String input, String separator){
-            if(tryBuild(this, input, separator))
+            if(tryBuild(input, separator))
                 return new Entity(this);
             else
                 return null;

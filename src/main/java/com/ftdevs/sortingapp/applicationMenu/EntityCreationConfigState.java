@@ -1,0 +1,33 @@
+package org.example.applicationMenu;
+
+import org.example.ApplicationContext;
+import org.example.entityCreators.HandInput;
+
+public class EntityCreationConfigState extends MenuInputState{
+    @Override
+    public boolean handle(ApplicationContext context) {
+        var buffer = context.creationStrategy.createEntities(context.input, context.entityType);
+        context.collection = new Object[buffer.length];
+        try {
+            var builder = context.entityType.getDeclaredConstructor().newInstance();
+            for (int i = 0; i < buffer.length; i++)
+                context.collection[i] = context.entityType
+                        .getMethod("build", String.class, String.class)
+                        .invoke(builder, buffer[i], selectSeparator(context));
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        context.setState(new MainMenuState());
+        return true;
+    }
+
+    public EntityCreationConfigState(String message){
+        menuSelectors = message;
+    }
+    private String selectSeparator(ApplicationContext context){
+        if(context.creationStrategy.getClass().getName().equals(HandInput.class.getName()))
+            return " ";
+        else return ",";
+    }
+}
