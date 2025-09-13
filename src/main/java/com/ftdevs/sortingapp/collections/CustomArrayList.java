@@ -1,6 +1,13 @@
 package com.ftdevs.sortingapp.collections;
 
-public class CustomArrayList<T> implements CustomList<T>{
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+@SuppressWarnings("all")
+public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
 
     private final static int DEFAULT_INITIAL_CAPACITY = 10;
     private Object[] array;
@@ -81,5 +88,46 @@ public class CustomArrayList<T> implements CustomList<T>{
         if(idx >= size || idx < 0) {
             throw new IndexOutOfBoundsException("Index " + idx + " out of bounds for length " + size);
         }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<>() {
+            private int pos = 0;
+            private int removeElement = -1;
+
+            @Override
+            public boolean hasNext() {
+                return pos < size;
+            }
+
+            @Override
+            public T next() {
+                if(!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                removeElement = pos;
+                return (T) array[pos++];
+            }
+
+            @Override
+            public void remove() {
+                if(removeElement < 0){
+                    throw new IllegalStateException("next() should be called before remove()");
+                }
+                CustomArrayList.this.remove(removeElement);
+                pos = removeElement;
+                removeElement = -1;
+            }
+
+            @Override
+            public void forEachRemaining(Consumer<? super T> action) {
+                Iterator.super.forEachRemaining(action);
+            }
+        };
+    }
+
+    public Stream<T> stream() {
+        return IntStream.range(0, size).mapToObj(this::get);
     }
 }
