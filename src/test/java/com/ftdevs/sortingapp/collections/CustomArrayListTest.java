@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomArrayListTest {
 
@@ -94,5 +96,34 @@ public class CustomArrayListTest {
             Assertions.assertTrue(equals);
         }
         Assertions.assertTrue(arrayList.size() == 0);
+    }
+
+    @Test
+    public void iteratorTest() {
+        CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        List<Integer> expectedValues = new ArrayList<>();
+
+        fillArrays(arrayList, expectedValues, 25);
+
+        Iterator<Integer> it = arrayList.iterator();
+        Iterator<Integer> expectedIterator = expectedValues.iterator();
+
+        while (it.hasNext()) {
+            Assertions.assertEquals(it.next(), expectedIterator.next());
+        }
+    }
+
+    @Test
+    public void streamTest() {
+        CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        List<Integer> expectedValues = new ArrayList<>();
+
+        fillArrays(arrayList, expectedValues, 51);
+
+        CustomArrayList<Integer> actualList = new CustomArrayList<>();
+        arrayList.stream().filter((i) -> i % 2 == 0).forEach(actualList::add);
+        List<Integer> expectedList = expectedValues.stream().filter(i -> i % 2 == 0).toList();
+
+        Assertions.assertTrue(checkArrays(actualList, expectedList));
     }
 }
