@@ -1,4 +1,4 @@
-package org.example.entities;
+package com.ftdevs.sortingapp.entities;
 
 import java.util.Arrays;
 import java.util.Comparator;

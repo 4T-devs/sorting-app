@@ -1,7 +1,7 @@
-package org.example.applicationMenu;
+package com.ftdevs.sortingapp.applicationMenu;
 
-import org.example.ApplicationContext;
-import org.example.entityCreators.HandInput;
+import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.entityCreators.HandInput;
 
 public class EntityCreationConfigState extends MenuInputState{
     @Override

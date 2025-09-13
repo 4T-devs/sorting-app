@@ -1,8 +1,8 @@
-package org.example.entityCreators;
+package com.ftdevs.sortingapp.entityCreators;
 
-import org.example.entities.Builder;
-import org.example.entities.FieldOrder;
-import org.example.validation.InputValidator;
+import com.ftdevs.sortingapp.entities.Builder;
+import com.ftdevs.sortingapp.entities.FieldOrder;
+import com.ftdevs.sortingapp.validation.InputValidator;
 
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;

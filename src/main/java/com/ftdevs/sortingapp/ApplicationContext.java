@@ -1,11 +1,11 @@
-package org.example;
+package com.ftdevs.sortingapp;
 
-import org.example.applicationMenu.MainMenuState;
-import org.example.applicationMenu.MenuInputState;
-import org.example.entities.Builder;
-import org.example.entities.Entity;
-import org.example.entityCreators.ICreationStrategy;
-import org.example.sorting.ISortStrategy;
+import com.ftdevs.sortingapp.applicationMenu.MainMenuState;
+import com.ftdevs.sortingapp.applicationMenu.MenuInputState;
+import com.ftdevs.sortingapp.entities.Builder;
+import com.ftdevs.sortingapp.entities.Entity;
+import com.ftdevs.sortingapp.entityCreators.ICreationStrategy;
+import com.ftdevs.sortingapp.sorting.ISortStrategy;
 
 public class ApplicationContext {
     private MenuInputState state;

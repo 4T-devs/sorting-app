@@ -1,4 +1,4 @@
-package org.example.entities;
+package com.ftdevs.sortingapp.entities;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

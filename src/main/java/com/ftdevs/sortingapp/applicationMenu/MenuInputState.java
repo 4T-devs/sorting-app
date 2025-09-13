@@ -1,6 +1,6 @@
-package org.example.applicationMenu;
+package com.ftdevs.sortingapp.applicationMenu;
 
-import org.example.ApplicationContext;
+import com.ftdevs.sortingapp.ApplicationContext;
 
 public abstract class MenuInputState {
     protected String errorMessage;

@@ -1,7 +1,7 @@
-package org.example.entityCreators;
+package com.ftdevs.sortingapp.entityCreators;
 
-import org.example.entities.Builder;
-import org.example.validation.InputValidator;
+import com.ftdevs.sortingapp.entities.Builder;
+import com.ftdevs.sortingapp.validation.InputValidator;
 
 import java.util.Scanner;
 

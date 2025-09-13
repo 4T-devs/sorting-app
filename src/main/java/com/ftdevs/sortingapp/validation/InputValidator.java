@@ -1,6 +1,4 @@
-package org.example.validation;
-
-import java.text.NumberFormat;
+package com.ftdevs.sortingapp.validation;
 
 public final class InputValidator {
     public static Integer tryParseInteger(String input){

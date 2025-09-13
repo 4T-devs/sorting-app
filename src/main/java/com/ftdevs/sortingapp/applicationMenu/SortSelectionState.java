@@ -1,7 +1,7 @@
-package org.example.applicationMenu;
+package com.ftdevs.sortingapp.applicationMenu;
 
-import org.example.ApplicationContext;
-import org.example.validation.InputValidator;
+import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class SortSelectionState extends MenuInputState { //Меню выбора алгоритма сортировки
 

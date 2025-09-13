@@ -1,5 +1,7 @@
 package com.ftdevs.sortingapp;
 
+import java.util.Scanner;
+
 public final class SorterMain {
     private SorterMain() {}
 
@@ -10,8 +12,9 @@ public final class SorterMain {
         while (context.exitFlag){
             context.printMenu();
             context.input = scanner.nextLine();
-            if(!context.hold())
+            if(!context.handle())
                 context.printError();
         }
+        scanner.close();
     }
 }

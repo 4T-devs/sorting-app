@@ -1,8 +1,8 @@
-package org.example.applicationMenu;
+package com.ftdevs.sortingapp.applicationMenu;
 
-import org.example.ApplicationContext;
-import org.example.entities.Entity;
-import org.example.validation.InputValidator;
+import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.entities.Entity;
+import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class EntitySelectionState extends MenuInputState {
 

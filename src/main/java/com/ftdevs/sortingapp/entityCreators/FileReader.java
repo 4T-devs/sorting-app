@@ -1,6 +1,6 @@
-package org.example.entityCreators;
+package com.ftdevs.sortingapp.entityCreators;
 
-import org.example.entities.Builder;
+import com.ftdevs.sortingapp.entities.Builder;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

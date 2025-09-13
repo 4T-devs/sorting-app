@@ -1,6 +1,6 @@
-package org.example.entities;
+package com.ftdevs.sortingapp.entities;
 
-import org.example.validation.InputValidator;
+import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class Entity {
     public Integer age;

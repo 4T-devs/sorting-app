@@ -1,10 +1,10 @@
-package org.example.applicationMenu;
+package com.ftdevs.sortingapp.applicationMenu;
 
-import org.example.ApplicationContext;
-import org.example.entityCreators.FileReader;
-import org.example.entityCreators.HandInput;
-import org.example.entityCreators.RandomCreator;
-import org.example.validation.InputValidator;
+import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.entityCreators.FileReader;
+import com.ftdevs.sortingapp.entityCreators.HandInput;
+import com.ftdevs.sortingapp.entityCreators.RandomCreator;
+import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class EntityCreationState extends MenuInputState { //Меню выбора способа создания сущностей
     @Override
