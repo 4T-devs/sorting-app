@@ -9,21 +9,21 @@ import com.ftdevs.sortingapp.validation.InputValidator;
 public class EntityCreationState extends MenuInputState { //Меню выбора способа создания сущностей
     @Override
     public boolean handle(ApplicationContext context) {
-        Integer input = InputValidator.tryParseInteger(context.input);
-        if(input == null){
+        Integer input = InputValidator.tryParseInteger(context.getInput());
+        if (input == null) {
             this.errorMessage = "Неверный формат вводимых данных";
             return false;
         }
 
-        switch (input){
+        switch (input) {
             case 1 -> { //Чтение объектов из файла
-                context.creationStrategy = new FileReader();
+                context.setCreationStrategy(new FileReader());
             }
             case 2 -> { //Случайная генерация объектов
-                context.creationStrategy = new RandomCreator();
+                context.setCreationStrategy(new RandomCreator());
             }
             case 3 -> { //Ручное заполнение объектов
-                context.creationStrategy = new HandInput();
+                context.setCreationStrategy(new HandInput());
             }
             case 4 -> {
                 context.setState(new MainMenuState());
@@ -34,10 +34,11 @@ public class EntityCreationState extends MenuInputState { //Меню выбор�
                 return false;
             }
         }
-        context.setState(new EntityCreationConfigState(context.creationStrategy.getMessage()));
+        context.setState(new EntityCreationConfigState(context.getCreationStrategy().getMessage()));
         return true;
     }
-    public EntityCreationState(){
+
+    public EntityCreationState() {
         StringBuilder sb = new StringBuilder();
         sb
                 .append("(1) Чтение объектов из файла\n")

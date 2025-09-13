@@ -7,13 +7,13 @@ public class MainMenuState extends MenuInputState {
 
     @Override
     public boolean handle(ApplicationContext context) { //Главное меню
-        Integer input = InputValidator.tryParseInteger(context.input);
-        if(input == null){
+        Integer input = InputValidator.tryParseInteger(context.getInput());
+        if (input == null) {
             this.errorMessage = "Неверный формат вводимых данных";
             return false;
         }
 
-        switch (input){
+        switch (input) {
             case 1 -> { //Просмотреть текущие объекты
                 context.printObjects();
                 return true;
@@ -31,7 +31,7 @@ public class MainMenuState extends MenuInputState {
                 return true;
             }
             case 5 -> { //Выход
-                context.exitFlag = false;
+                context.exit();
                 return true;
             }
             default -> {
@@ -41,8 +41,7 @@ public class MainMenuState extends MenuInputState {
         }
     }
 
-
-    public MainMenuState(){
+    public MainMenuState() {
         StringBuilder sb = new StringBuilder();
         sb
                 .append("(1) Посмотреть объекты\n")

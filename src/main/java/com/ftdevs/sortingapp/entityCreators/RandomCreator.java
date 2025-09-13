@@ -23,7 +23,7 @@ public class RandomCreator implements ICreationStrategy {
     @Override
     public String[] createEntities(String input, Class<? extends Builder> type) {
         Integer count = InputValidator.tryParseInteger(input);
-        if(count == null)
+        if (count == null)
             return new String[0];
 
         List<Field> fields = Arrays.stream(type.getDeclaredFields()).
@@ -32,9 +32,9 @@ public class RandomCreator implements ICreationStrategy {
         String[] result = new String[count];
 
 
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             result[i] = "";
-            for(int j = 0; j < fields.size(); j++)
+            for (int j = 0; j < fields.size(); j++)
                 result[i] += j < fields.size() - 1 ?
                         createValue(fields.get(j).getType().getName()) + "," :
                         createValue(fields.get(j).getType().getName());
@@ -50,21 +50,23 @@ public class RandomCreator implements ICreationStrategy {
         return "Введите количество объектов для генерации";
     }
 
-    private String createValue(String typeName){
+    private String createValue(String typeName) {
         Random r = new Random();
         String result = "";
 
-        switch (typeName){
-            case NAME_INTEGER -> result = String.valueOf(r.nextInt(MIN_VALUE, MAX_VALUE+1));
-            case NAME_FLOAT -> result = String.valueOf(r.nextFloat(MIN_VALUE, MAX_VALUE+1));
-            case NAME_DOUBLE -> result = String.valueOf(r.nextDouble(MIN_VALUE, MAX_VALUE+1));
-            case NAME_LONG -> result = String.valueOf(r.nextLong(MIN_VALUE, MAX_VALUE+1));
+        switch (typeName) {
+            case NAME_INTEGER -> result = String.valueOf(r.nextInt(MIN_VALUE, MAX_VALUE + 1));
+            case NAME_FLOAT -> result = String.valueOf(r.nextFloat(MIN_VALUE, MAX_VALUE + 1));
+            case NAME_DOUBLE -> result = String.valueOf(r.nextDouble(MIN_VALUE, MAX_VALUE + 1));
+            case NAME_LONG -> result = String.valueOf(r.nextLong(MIN_VALUE, MAX_VALUE + 1));
             case NAME_STRING -> {
-                byte[] array = new byte[MAX_VALUE/2];
+                byte[] array = new byte[MAX_VALUE / 2];
                 r.nextBytes(array);
                 result = new String(array, Charset.forName("UTF-8"));
             }
-            default -> {}
+            default -> {
+
+            }
         }
         return result;
     }

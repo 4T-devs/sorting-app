@@ -13,13 +13,15 @@ public class FileReader implements ICreationStrategy {
     @Override
     public String[] createEntities(String input, Class<? extends Builder> type) {
         Path filePath = Paths.get(input);
-        if(!Files.exists(filePath))
+        if (!Files.exists(filePath))
             return new String[0];
         List<String> values = new ArrayList<>();
 
-        try{
+        try {
             values = Files.readAllLines(filePath);
-        } catch (Exception ex) {  }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
 
         return values.toArray(new String[values.size()]);
     }

@@ -3,19 +3,23 @@ package com.ftdevs.sortingapp;
 import java.util.Scanner;
 
 public final class SorterMain {
-    private SorterMain() {}
+    private SorterMain() {
+
+    }
 
     public static void main(String[] args) {
         ApplicationContext context = new ApplicationContext();
 
-        try(Scanner scanner = new Scanner(System.in)){
-            while (context.exitFlag){
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (context.isExit()) {
                 context.printMenu();
-                context.input = scanner.nextLine();
-                if(!context.handle())
+                context.setInput(scanner.nextLine());
+                if (!context.handle())
                     context.printError();
             }
-        } catch (Exception ex) { }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         System.out.println("END");
     }
 }

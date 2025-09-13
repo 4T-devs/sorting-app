@@ -1,7 +1,7 @@
 package com.ftdevs.sortingapp.validation;
 
 public final class InputValidator {
-    public static Integer tryParseInteger(String input){
+    public static Integer tryParseInteger(String input) {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException ex) {
@@ -9,7 +9,7 @@ public final class InputValidator {
         }
     }
 
-    public static Float tryParseFloat(String input){
+    public static Float tryParseFloat(String input) {
         try {
             return Float.parseFloat(input);
         } catch (NumberFormatException ex) {
@@ -17,7 +17,7 @@ public final class InputValidator {
         }
     }
 
-    public static Double tryParseDouble(String input){
+    public static Double tryParseDouble(String input) {
         try {
             return Double.parseDouble(input);
         } catch (NumberFormatException ex) {
@@ -25,7 +25,7 @@ public final class InputValidator {
         }
     }
 
-    public static Long tryParseLong(String input){
+    public static Long tryParseLong(String input) {
         try {
             return Long.parseLong(input);
         } catch (NumberFormatException ex) {
@@ -33,7 +33,7 @@ public final class InputValidator {
         }
     }
 
-    public static Byte tryParseByte(String input){
+    public static Byte tryParseByte(String input) {
         try {
             return Byte.parseByte(input);
         } catch (NumberFormatException ex) {

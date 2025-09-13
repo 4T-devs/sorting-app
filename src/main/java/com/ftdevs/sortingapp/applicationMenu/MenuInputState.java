@@ -8,11 +8,11 @@ public abstract class MenuInputState {
     protected String menuSelectors;
     public abstract boolean handle(ApplicationContext context);
 
-    public String getErrorMessage(){
+    public String getErrorMessage() {
         return errorMessage;
     }
 
-    public String getMenu(){
+    public String getMenu() {
         return menuSelectors;
     }
 }

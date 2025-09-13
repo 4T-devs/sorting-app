@@ -6,18 +6,19 @@ import com.ftdevs.sortingapp.validation.InputValidator;
 import java.util.Scanner;
 
 public class HandInput implements ICreationStrategy {
+
     @Override
     public String[] createEntities(String input, Class<? extends Builder> type) {
         Integer count = InputValidator.tryParseInteger(input);
-        if(count == null)
+        if (count == null)
             return new String[0];
 
         String[] result = new String[count];
         printEntityFields(type);
         Scanner sc = new Scanner(System.in);
-        for(int i = 0; i < count;){
+        for (int i = 0; i < count;) {
             String buffer = sc.nextLine();
-            if(buffer.split(" ").length == type.getDeclaredFields().length){
+            if (buffer.split(" ").length == type.getDeclaredFields().length) {
                 result[i] = buffer;
                 i++;
             } else {
@@ -33,12 +34,12 @@ public class HandInput implements ICreationStrategy {
         return "Введите количество создаваемых объектов";
     }
 
-    private void printEntityFields(Class<?> type){
+    private void printEntityFields(Class<?> type) {
         var fields = type.getDeclaredFields();
 
         StringBuilder sb = new StringBuilder();
         sb.append("Необходимо задать следующие параметры через пробел:\n");
-        for(var field : fields)
+        for (var field : fields)
             sb.append(String.format("|%s: %s",
                     field.getType().getName().substring(10),
                     field.getName()));

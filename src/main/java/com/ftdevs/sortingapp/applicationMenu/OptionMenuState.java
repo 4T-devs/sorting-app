@@ -6,13 +6,13 @@ import com.ftdevs.sortingapp.validation.InputValidator;
 public class OptionMenuState extends MenuInputState { //Меню опций
     @Override
     public boolean handle(ApplicationContext context) {
-        Integer input = InputValidator.tryParseInteger(context.input);
-        if(input == null){
+        Integer input = InputValidator.tryParseInteger(context.getInput());
+        if (input == null) {
             this.errorMessage = "Неверный формат вводимых данных";
             return false;
         }
 
-        switch (input){
+        switch (input) {
             case 1 -> { //Выбор типа сущности
                 context.setState(new EntitySelectionState());
                 return true;
@@ -32,7 +32,7 @@ public class OptionMenuState extends MenuInputState { //Меню опций
         }
     }
 
-    public OptionMenuState(){
+    public OptionMenuState() {
         StringBuilder sb = new StringBuilder();
         sb
                 .append("(1) Выбрать тип объекта\n")

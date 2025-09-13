@@ -5,16 +5,15 @@ import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class SortSelectionState extends MenuInputState { //Меню выбора алгоритма сортировки
 
-
     @Override
     public boolean handle(ApplicationContext context) {
-        Integer input = InputValidator.tryParseInteger(context.input);
-        if(input == null){
+        Integer input = InputValidator.tryParseInteger(context.getInput());
+        if (input == null) {
             this.errorMessage = "Неверный формат вводимых данных";
             return false;
         }
 
-        switch (input){
+        switch (input) {
             case 1 -> { //Алгоритм 1
                 return true;
             }
@@ -35,7 +34,7 @@ public class SortSelectionState extends MenuInputState { //Меню выбора
         }
     }
 
-    public SortSelectionState(){
+    public SortSelectionState() {
         StringBuilder sb = new StringBuilder();
         sb
                 .append("(1) Алгоритм 1\n")

@@ -9,48 +9,96 @@ import com.ftdevs.sortingapp.sorting.ISortStrategy;
 
 public class ApplicationContext {
     private MenuInputState state;
-    public String input;
-    public boolean exitFlag = true;
+    private String input;
+    private boolean exitFlag = true;
 
-    public Object[] collection;
+    private Object[] collection;
 
-    public ISortStrategy sortStrategy;
+    private ISortStrategy sortStrategy;
 
-    public ICreationStrategy creationStrategy;
+    private ICreationStrategy creationStrategy;
 
-    public Class<? extends Builder> entityType;
+    private Class<? extends Builder> entityType;
 
-    public boolean handle(){
+    public boolean handle() {
         return state.handle(this);
     }
 
-    public void setState(MenuInputState state){
+    public void setState(MenuInputState state) {
         this.state = state;
     }
 
-    public void printError(){
+    public void setInput(String input) {
+        this.input = input;
+    }
+
+    public String getInput() {
+        return input;
+    }
+
+    public boolean isExit() {
+        return exitFlag;
+    }
+
+    public void exit() {
+        exitFlag = false;
+    }
+
+    public void setCollection(Object[] collection) {
+        this.collection = collection;
+    }
+
+    public Object[] getCollection() {
+        return collection;
+    }
+
+    public void setSortStrategy(ISortStrategy sortStrategy) {
+        this.sortStrategy = sortStrategy;
+    }
+
+    public ISortStrategy getSortStrategy() {
+        return sortStrategy;
+    }
+
+    public void setCreationStrategy(ICreationStrategy creationStrategy) {
+        this.creationStrategy = creationStrategy;
+    }
+
+    public ICreationStrategy getCreationStrategy() {
+        return creationStrategy;
+    }
+
+    public void setEntityType(Class<? extends Builder> entityType) {
+        this.entityType = entityType;
+    }
+
+    public Class<? extends Builder> getEntityType() {
+        return entityType;
+    }
+
+    public void printError() {
         System.out.println(state.getErrorMessage());
     }
 
-    public ApplicationContext(){
+    public ApplicationContext() {
         state = new MainMenuState();
         entityType = Entity.EntityBuilder.class;
     }
 
-    public void printObjects(){
+    public void printObjects() {
         try {
-            for(var i : collection)
+            for (var i : collection)
                 System.out.println(i);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println("Список объектов пуст");
         }
     }
 
-    public void sort(){
+    public void sort() {
         collection = sortStrategy.sort(collection);
     }
 
-    public void printMenu(){
+    public void printMenu() {
         System.out.println(state.getMenu());
     }
 }
