@@ -126,7 +126,7 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
             }
         };
     }
-
+    @Override
     public Stream<T> stream() {
         return IntStream.range(0, size).mapToObj(this::get);
     }
