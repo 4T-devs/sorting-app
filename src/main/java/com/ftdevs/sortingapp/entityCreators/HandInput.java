@@ -1,29 +1,30 @@
 package com.ftdevs.sortingapp.entityCreators;
 
+import com.ftdevs.sortingapp.IOSingleton;
 import com.ftdevs.sortingapp.entities.Builder;
 import com.ftdevs.sortingapp.validation.InputValidator;
-
-import java.util.Scanner;
 
 public class HandInput implements ICreationStrategy {
 
     @Override
     public String[] createEntities(String input, Class<? extends Builder> type) {
         Integer count = InputValidator.tryParseInteger(input);
-        if (count == null)
-            return new String[0];
+        if (count == null) return new String[0];
 
         String[] result = new String[count];
         printEntityFields(type);
-        Scanner sc = new Scanner(System.in);
-        for (int i = 0; i < count;) {
-            String buffer = sc.nextLine();
-            if (buffer.split(" ").length == type.getDeclaredFields().length) {
-                result[i] = buffer;
-                i++;
-            } else {
-                System.out.println("Введено неверное количество аргументов");
+        try {
+            for (int i = 0; i < count; ) {
+                String buffer = IOSingleton.getInstance().readLine();
+                if (buffer.split(" ").length == type.getDeclaredFields().length) {
+                    result[i] = buffer;
+                    i++;
+                } else {
+                    IOSingleton.getInstance().printLine("Введено неверное количество аргументов");
+                }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return result;
@@ -40,9 +41,9 @@ public class HandInput implements ICreationStrategy {
         StringBuilder sb = new StringBuilder();
         sb.append("Необходимо задать следующие параметры через пробел:\n");
         for (var field : fields)
-            sb.append(String.format("|%s: %s",
-                    field.getType().getName().substring(10),
-                    field.getName()));
-        System.out.println(sb.toString());
+            sb.append(
+                    String.format(
+                            "|%s: %s", field.getType().getName().substring(10), field.getName()));
+        IOSingleton.getInstance().printLine(sb.toString());
     }
 }

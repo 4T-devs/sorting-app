@@ -9,7 +9,9 @@
         Simplified PMD ruleset for educational console Java project.
     </description>
 
-    <rule ref="category/java/codestyle.xml"/>
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="UseExplicitTypes"/>
+    </rule>
     <rule ref="category/java/design.xml"/>
     <rule ref="category/java/bestpractices.xml">
         <exclude name="SystemPrintln"/>

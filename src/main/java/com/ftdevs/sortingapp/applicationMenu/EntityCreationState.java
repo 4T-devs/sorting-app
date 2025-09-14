@@ -6,7 +6,7 @@ import com.ftdevs.sortingapp.entityCreators.HandInput;
 import com.ftdevs.sortingapp.entityCreators.RandomCreator;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
-public class EntityCreationState extends MenuInputState { //Меню выбора способа создания сущностей
+public class EntityCreationState extends MenuInputState { // Меню выбора способа создания сущностей
     @Override
     public boolean handle(ApplicationContext context) {
         Integer input = InputValidator.tryParseInteger(context.getInput());
@@ -16,13 +16,13 @@ public class EntityCreationState extends MenuInputState { //Меню выбор�
         }
 
         switch (input) {
-            case 1 -> { //Чтение объектов из файла
+            case 1 -> { // Чтение объектов из файла
                 context.setCreationStrategy(new FileReader());
             }
-            case 2 -> { //Случайная генерация объектов
+            case 2 -> { // Случайная генерация объектов
                 context.setCreationStrategy(new RandomCreator());
             }
-            case 3 -> { //Ручное заполнение объектов
+            case 3 -> { // Ручное заполнение объектов
                 context.setCreationStrategy(new HandInput());
             }
             case 4 -> {
@@ -40,8 +40,7 @@ public class EntityCreationState extends MenuInputState { //Меню выбор�
 
     public EntityCreationState() {
         StringBuilder sb = new StringBuilder();
-        sb
-                .append("(1) Чтение объектов из файла\n")
+        sb.append("(1) Чтение объектов из файла\n")
                 .append("(2) Генерация случайных объектов\n")
                 .append("(3) Ручное заполнение объектов\n")
                 .append("(4) Назад\n");

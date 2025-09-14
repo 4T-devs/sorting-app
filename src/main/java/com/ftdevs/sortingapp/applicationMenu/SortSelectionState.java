@@ -3,7 +3,7 @@ package com.ftdevs.sortingapp.applicationMenu;
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
-public class SortSelectionState extends MenuInputState { //Меню выбора алгоритма сортировки
+public class SortSelectionState extends MenuInputState { // Меню выбора алгоритма сортировки
 
     @Override
     public boolean handle(ApplicationContext context) {
@@ -14,13 +14,13 @@ public class SortSelectionState extends MenuInputState { //Меню выбора
         }
 
         switch (input) {
-            case 1 -> { //Алгоритм 1
+            case 1 -> { // Алгоритм 1
                 return true;
             }
-            case 2 -> { //Алгоритм 2
+            case 2 -> { // Алгоритм 2
                 return true;
             }
-            case 3 -> { //Алгоритм 3
+            case 3 -> { // Алгоритм 3
                 return true;
             }
             case 4 -> {
@@ -36,8 +36,7 @@ public class SortSelectionState extends MenuInputState { //Меню выбора
 
     public SortSelectionState() {
         StringBuilder sb = new StringBuilder();
-        sb
-                .append("(1) Алгоритм 1\n")
+        sb.append("(1) Алгоритм 1\n")
                 .append("(2) Алгоритм 2\n")
                 .append("(3) Алгоритм 3\n")
                 .append("(4) Назад\n");

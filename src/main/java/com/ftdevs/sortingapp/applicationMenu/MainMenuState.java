@@ -6,7 +6,7 @@ import com.ftdevs.sortingapp.validation.InputValidator;
 public class MainMenuState extends MenuInputState {
 
     @Override
-    public boolean handle(ApplicationContext context) { //Главное меню
+    public boolean handle(ApplicationContext context) { // Главное меню
         Integer input = InputValidator.tryParseInteger(context.getInput());
         if (input == null) {
             this.errorMessage = "Неверный формат вводимых данных";
@@ -14,23 +14,23 @@ public class MainMenuState extends MenuInputState {
         }
 
         switch (input) {
-            case 1 -> { //Просмотреть текущие объекты
+            case 1 -> { // Просмотреть текущие объекты
                 context.printObjects();
                 return true;
             }
-            case 2 -> { //Добавить объекты
+            case 2 -> { // Добавить объекты
                 context.setState(new EntityCreationState());
                 return true;
             }
-            case 3 -> { //Сортировка объектов
+            case 3 -> { // Сортировка объектов
                 context.sort();
                 return true;
             }
-            case 4 -> { //Опции
+            case 4 -> { // Опции
                 context.setState(new OptionMenuState());
                 return true;
             }
-            case 5 -> { //Выход
+            case 5 -> { // Выход
                 context.exit();
                 return true;
             }
@@ -43,8 +43,7 @@ public class MainMenuState extends MenuInputState {
 
     public MainMenuState() {
         StringBuilder sb = new StringBuilder();
-        sb
-                .append("(1) Посмотреть объекты\n")
+        sb.append("(1) Посмотреть объекты\n")
                 .append("(2) Добавить объекты\n")
                 .append("(3) Сортировка объектов\n")
                 .append("(4) Опции\n")

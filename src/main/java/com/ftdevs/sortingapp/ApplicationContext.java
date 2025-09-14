@@ -24,11 +24,11 @@ public class ApplicationContext {
         return state.handle(this);
     }
 
-    public void setState(MenuInputState state) {
+    public void setState(final MenuInputState state) {
         this.state = state;
     }
 
-    public void setInput(String input) {
+    public void setInput(final String input) {
         this.input = input;
     }
 
@@ -44,7 +44,7 @@ public class ApplicationContext {
         exitFlag = false;
     }
 
-    public void setCollection(Object[] collection) {
+    public void setCollection(final Object... collection) {
         this.collection = collection;
     }
 
@@ -52,7 +52,7 @@ public class ApplicationContext {
         return collection;
     }
 
-    public void setSortStrategy(ISortStrategy sortStrategy) {
+    public void setSortStrategy(final ISortStrategy sortStrategy) {
         this.sortStrategy = sortStrategy;
     }
 
@@ -60,7 +60,7 @@ public class ApplicationContext {
         return sortStrategy;
     }
 
-    public void setCreationStrategy(ICreationStrategy creationStrategy) {
+    public void setCreationStrategy(final ICreationStrategy creationStrategy) {
         this.creationStrategy = creationStrategy;
     }
 
@@ -68,7 +68,7 @@ public class ApplicationContext {
         return creationStrategy;
     }
 
-    public void setEntityType(Class<? extends Builder> entityType) {
+    public void setEntityType(final Class<? extends Builder> entityType) {
         this.entityType = entityType;
     }
 
@@ -77,20 +77,20 @@ public class ApplicationContext {
     }
 
     public void printError() {
-        System.out.println(state.getErrorMessage());
+        IOSingleton.getInstance().printLine(state.getErrorMessage());
     }
 
     public ApplicationContext() {
         state = new MainMenuState();
+        collection = new Object[0];
         entityType = Entity.EntityBuilder.class;
     }
 
     public void printObjects() {
         try {
-            for (var i : collection)
-                System.out.println(i);
+            for (var i : collection) IOSingleton.getInstance().printLine(i.toString());
         } catch (Exception ex) {
-            System.out.println("Список объектов пуст");
+            IOSingleton.getInstance().printLine("Список объектов пуст");
         }
     }
 
@@ -99,6 +99,6 @@ public class ApplicationContext {
     }
 
     public void printMenu() {
-        System.out.println(state.getMenu());
+        IOSingleton.getInstance().printLine(state.getMenu());
     }
 }

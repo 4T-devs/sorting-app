@@ -3,7 +3,7 @@ package com.ftdevs.sortingapp.applicationMenu;
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
-public class OptionMenuState extends MenuInputState { //Меню опций
+public class OptionMenuState extends MenuInputState { // Меню опций
     @Override
     public boolean handle(ApplicationContext context) {
         Integer input = InputValidator.tryParseInteger(context.getInput());
@@ -13,15 +13,15 @@ public class OptionMenuState extends MenuInputState { //Меню опций
         }
 
         switch (input) {
-            case 1 -> { //Выбор типа сущности
+            case 1 -> { // Выбор типа сущности
                 context.setState(new EntitySelectionState());
                 return true;
             }
-            case 2 -> { //Выбор сортировки
+            case 2 -> { // Выбор сортировки
                 context.setState(new SortSelectionState());
                 return true;
             }
-            case 3 -> { //Назад
+            case 3 -> { // Назад
                 context.setState(new MainMenuState());
                 return true;
             }
@@ -34,11 +34,9 @@ public class OptionMenuState extends MenuInputState { //Меню опций
 
     public OptionMenuState() {
         StringBuilder sb = new StringBuilder();
-        sb
-                .append("(1) Выбрать тип объекта\n")
+        sb.append("(1) Выбрать тип объекта\n")
                 .append("(2) Выбрать алгоритм сортировки\n")
                 .append("(3) Назад\n");
         menuSelectors = sb.toString();
     }
-
 }
