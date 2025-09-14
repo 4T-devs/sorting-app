@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 final class FileReaderTest {
 
-    private FileReaderTest() { }
+    private FileReaderTest() {}
 
     @Test
     void readFileTest() {
@@ -29,7 +29,9 @@ final class FileReaderTest {
 
         FileReader reader = new FileReader();
         var result = reader.createEntities(filePath, Entity.EntityBuilder.class);
-        assertTrue(Arrays.deepEquals(input.split("\n"), result));
+        assertTrue(
+                Arrays.deepEquals(input.split("\n"), result),
+                "Input params are the same as output");
 
         if (Files.exists(path))
             try {

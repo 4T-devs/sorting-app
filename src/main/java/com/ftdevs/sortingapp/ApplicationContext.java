@@ -6,6 +6,7 @@ import com.ftdevs.sortingapp.entities.Builder;
 import com.ftdevs.sortingapp.entities.Entity;
 import com.ftdevs.sortingapp.entityCreators.ICreationStrategy;
 import com.ftdevs.sortingapp.sorting.ISortStrategy;
+import java.util.Arrays;
 
 public class ApplicationContext {
     private MenuInputState state;
@@ -45,11 +46,11 @@ public class ApplicationContext {
     }
 
     public void setCollection(final Object... collection) {
-        this.collection = collection;
+        this.collection = Arrays.copyOf(collection, collection.length);
     }
 
     public Object[] getCollection() {
-        return collection;
+        return Arrays.copyOf(collection, collection.length);
     }
 
     public void setSortStrategy(final ISortStrategy sortStrategy) {

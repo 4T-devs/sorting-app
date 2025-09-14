@@ -2,6 +2,8 @@ package com.ftdevs.sortingapp.validation;
 
 public final class InputValidator {
 
+    private InputValidator() {}
+
     public static Integer tryParseInteger(String input) {
         try {
             return Integer.parseInt(input);

@@ -1,16 +1,15 @@
 package com.ftdevs.sortingapp;
 
-import com.ftdevs.sortingapp.applicationMenu.OptionMenuState;
-import java.io.*;
-
-import com.ftdevs.sortingapp.entities.Entity;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.ftdevs.sortingapp.applicationMenu.OptionMenuState;
+import com.ftdevs.sortingapp.entities.Entity;
+import java.io.*;
+import org.junit.jupiter.api.Test;
 
 final class ApplicationContextTest {
 
-    private ApplicationContextTest() { }
+    private ApplicationContextTest() {}
 
     @Test
     void changeContextState() {

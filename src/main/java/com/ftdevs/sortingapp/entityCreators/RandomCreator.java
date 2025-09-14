@@ -5,21 +5,21 @@ import com.ftdevs.sortingapp.entities.Builder;
 import com.ftdevs.sortingapp.entities.FieldOrder;
 import com.ftdevs.sortingapp.validation.InputValidator;
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 public class RandomCreator implements ICreationStrategy {
-    private static int MAX_VALUE = 100;
-    private static int MIN_VALUE = 1;
+    private static final int MAX_VALUE = 100;
+    private static final int MIN_VALUE = 1;
 
-    private final String NAME_INTEGER = "java.lang.Integer";
-    private final String NAME_FLOAT = "java.lang.Float";
-    private final String NAME_DOUBLE = "java.lang.Double";
-    private final String NAME_LONG = "java.lang.Long";
-    private final String NAME_STRING = "java.lang.String";
+    private static final String NAME_INTEGER = "java.lang.Integer";
+    private static final String NAME_FLOAT = "java.lang.Float";
+    private static final String NAME_DOUBLE = "java.lang.Double";
+    private static final String NAME_LONG = "java.lang.Long";
+    private static final String NAME_STRING = "java.lang.String";
 
     @Override
     public String[] createEntities(String input, Class<? extends Builder> type) {
@@ -63,9 +63,11 @@ public class RandomCreator implements ICreationStrategy {
             case NAME_STRING -> {
                 byte[] array = new byte[MAX_VALUE / 2];
                 r.nextBytes(array);
-                result = new String(array, Charset.forName("UTF-8"));
+                result = new String(array, StandardCharsets.UTF_8);
             }
-            default -> IOSingleton.getInstance().printLine(String.format("Недопустимый тип данных: %s", typeName));
+            default ->
+                    IOSingleton.getInstance()
+                            .printLine(String.format("Недопустимый тип данных: %s", typeName));
         }
         return result;
     }

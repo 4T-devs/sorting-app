@@ -7,20 +7,11 @@ import com.ftdevs.sortingapp.entities.Entity;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Arrays;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 final class HandInputTest {
 
-    private HandInputTest() { }
-
-    private final InputStream originalSystemIn = System.in;
-    private ByteArrayInputStream testIn;
-
-    @AfterEach
-    public void restoreSystemIn() {
-        System.setIn(originalSystemIn);
-    }
+    private HandInputTest() {}
 
     @Test
     void handInputTest() {
@@ -34,6 +25,7 @@ final class HandInputTest {
 
         HandInput hi = new HandInput();
         var result = hi.createEntities(input, Entity.EntityBuilder.class);
-        assertTrue(Arrays.deepEquals(iStream.split("\n"), result));
+        assertTrue(
+                Arrays.deepEquals(iStream.split("\n"), result), "Input are the same as the output");
     }
 }

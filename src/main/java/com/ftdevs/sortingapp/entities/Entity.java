@@ -3,9 +3,9 @@ package com.ftdevs.sortingapp.entities;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class Entity {
-    Integer age;
-    Float weight;
-    Double height;
+    private final Integer age;
+    private final Float weight;
+    private final Double height;
 
     public Entity(
             Integer age,
