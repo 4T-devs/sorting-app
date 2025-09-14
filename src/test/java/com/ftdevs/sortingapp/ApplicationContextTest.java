@@ -1,11 +1,12 @@
 package com.ftdevs.sortingapp;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-
 import com.ftdevs.sortingapp.applicationMenu.OptionMenuState;
 import java.io.*;
+
+import com.ftdevs.sortingapp.entities.Entity;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 final class ApplicationContextTest {
 
@@ -63,5 +64,28 @@ final class ApplicationContextTest {
         assertTrue(context.getCollection().length > 0, "Collection has elements");
 
         context.printObjects();
+    }
+
+    @Test
+    void changeContextEntityTypeTest() {
+        final ApplicationContext context = new ApplicationContext();
+        context.setEntityType(Entity.EntityBuilder.class);
+
+        assertEquals(context.getEntityType(), Entity.EntityBuilder.class, "Types are equal");
+    }
+
+    @Test
+    void applicationMenuWalkerTest() {
+        IOSingleton.getInstance().setOutput(System.out);
+        final ApplicationContext context = new ApplicationContext();
+        final String input = "6 1 2 5 4 4 1 1 2 3 5 4 2 1 2 3 5 4 4 3 5";
+        for (var c : input.split(" ")) {
+            context.printMenu();
+            IOSingleton.getInstance().printLine(c);
+            context.setInput(c);
+            context.handle();
+        }
+
+        assertTrue(!context.isExit(), "Application menu successful walked");
     }
 }
