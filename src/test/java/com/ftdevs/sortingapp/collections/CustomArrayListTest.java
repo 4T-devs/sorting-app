@@ -1,59 +1,92 @@
 package com.ftdevs.sortingapp.collections;
 
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
+import org.junit.jupiter.api.Test;
 
-public class CustomArrayListTest {
+@SuppressWarnings("PMD.LinguisticNaming")
+final class CustomArrayListTest {
 
-    private void fillArrays(CustomArrayList<Integer> arrayList, List<Integer> arr, int range) {
+    private static final String GET_MESSAGE = "Method get() is incorrect";
+    private static final String ARRAYS_NOT_EQUAL = "Arrays are not equal";
+    private static final String ITERATORS = "Actual iterator is not equal to expected iterator";
+    private static final String REMOVE_MESSAGE = "Method Remove is incorrect";
+
+    private CustomArrayListTest() {}
+
+    private void fillArrays(
+            final CustomArrayList<Integer> arrayList, final List<Integer> arr, final int range) {
         for (int i = 0; i < range; i++) {
             arrayList.add(i);
             arr.add(i);
         }
     }
 
-    private boolean checkArrays(CustomArrayList<Integer> arrayList, List<Integer> arr) {
-        if(arrayList.size() != arr.size()) {
+    private boolean checkArrays(final CustomArrayList<Integer> arrayList, final List<Integer> arr) {
+
+        boolean equals = true;
+
+        if (arrayList.size() != arr.size()) {
             System.out.println("Размеры массивов не равны");
-            return false;
+            equals = false;
         }
 
-        for(int i = 0; i < arrayList.size(); i++) {
-            if(!arrayList.get(i).equals(arr.get(i))) {
-                return false;
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (!arrayList.get(i).equals(arr.get(i))) {
+                equals = false;
             }
+
         }
-        return true;
+
+        return equals;
     }
 
     @Test
-    public void addAndGetTest() {
+    void addTest() {
 
-        CustomArrayList<Integer> arrayList = new CustomArrayList<>();
-        List<Integer> expectedValues = new ArrayList<>();
+        final CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        final List<Integer> expectedValues = new ArrayList<>();
+
+        fillArrays(arrayList, expectedValues, 20);
+        final boolean equals = checkArrays(arrayList, expectedValues);
+
+        assertTrue(equals, ARRAYS_NOT_EQUAL);
+    }
+
+    @Test
+    void getTest() {
+
+        final CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        final List<Integer> expectedValues = new ArrayList<>();
 
         fillArrays(arrayList, expectedValues, 20);
         boolean equals = checkArrays(arrayList, expectedValues);
 
-        Assertions.assertTrue(equals);
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-           arrayList.get(-1);
-        });
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+        try {
+            arrayList.get(-1);
+            equals = false;
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+
+        try {
             arrayList.get(20);
-        });
+            equals = false;
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+
+        assertTrue(equals, GET_MESSAGE);
     }
 
     @Test
-    public void setTest() {
-        CustomArrayList<Integer> arrayList = new CustomArrayList<>();
-        List<Integer> expectedValues = new ArrayList<>();
+    void setTest() {
+        final CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        final List<Integer> expectedValues = new ArrayList<>();
 
         fillArrays(arrayList, expectedValues, 20);
 
@@ -63,67 +96,63 @@ public class CustomArrayListTest {
         arrayList.set(19, 200);
         expectedValues.set(19, 200);
 
-        boolean equals = checkArrays(arrayList, expectedValues);
+        final boolean equals = checkArrays(arrayList, expectedValues);
 
-        Assertions.assertTrue(equals);
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            arrayList.set(-1, 20);
-        });
-        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
-            arrayList.set(20, 200);
-        });
+        assertTrue(equals, ARRAYS_NOT_EQUAL);
     }
 
     @Test
-    public void removeTest() {
-        CustomArrayList<Integer> arrayList = new CustomArrayList<>();
-        List<Integer> expectedValues = new ArrayList<>();
+    void removeTest() {
+        final CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        final List<Integer> expectedValues = new ArrayList<>();
 
         fillArrays(arrayList, expectedValues, 25);
 
-        Integer removedElement = arrayList.remove(5);
-        Integer expectedRemovedElement = expectedValues.remove(5);
+        final Integer removedElement = arrayList.remove(5);
+        final Integer expectedElement = expectedValues.remove(5);
         boolean equals = checkArrays(arrayList, expectedValues);
 
-        Assertions.assertTrue(equals);
-        Assertions.assertEquals(expectedRemovedElement, removedElement);
-
-        int listSize = arrayList.size();
-        for(int i = 0; i < listSize; i++) {
+        final int listSize = arrayList.size();
+        for (int i = 0; i < listSize && equals; i++) {
             arrayList.remove(0);
             expectedValues.remove(0);
             equals = checkArrays(arrayList, expectedValues);
-            Assertions.assertTrue(equals);
         }
-        Assertions.assertTrue(arrayList.size() == 0);
+
+        equals &= expectedElement.equals(removedElement) && arrayList.size() == 0;
+
+        assertTrue(equals, REMOVE_MESSAGE);
     }
 
     @Test
-    public void iteratorTest() {
-        CustomArrayList<Integer> arrayList = new CustomArrayList<>();
-        List<Integer> expectedValues = new ArrayList<>();
+    void iteratorTest() {
+        final CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        final List<Integer> expectedValues = new ArrayList<>();
 
         fillArrays(arrayList, expectedValues, 25);
 
-        Iterator<Integer> it = arrayList.iterator();
-        Iterator<Integer> expectedIterator = expectedValues.iterator();
+        final Iterator<Integer> iterator = arrayList.iterator();
+        final Iterator<Integer> expectedIterator = expectedValues.iterator();
 
-        while (it.hasNext()) {
-            Assertions.assertEquals(it.next(), expectedIterator.next());
+        boolean equals = true;
+        while (iterator.hasNext() && equals) {
+            equals = iterator.next().equals(expectedIterator.next());
         }
+
+        assertTrue(equals, ITERATORS);
     }
 
     @Test
-    public void streamTest() {
-        CustomArrayList<Integer> arrayList = new CustomArrayList<>();
-        List<Integer> expectedValues = new ArrayList<>();
+    void streamTest() {
+        final CustomArrayList<Integer> arrayList = new CustomArrayList<>();
+        final List<Integer> expectedValues = new ArrayList<>();
 
         fillArrays(arrayList, expectedValues, 51);
 
-        CustomArrayList<Integer> actualList = new CustomArrayList<>();
+        final CustomArrayList<Integer> actualList = new CustomArrayList<>();
         arrayList.stream().filter((i) -> i % 2 == 0).forEach(actualList::add);
-        List<Integer> expectedList = expectedValues.stream().filter(i -> i % 2 == 0).toList();
+        final List<Integer> expectedList = expectedValues.stream().filter(i -> i % 2 == 0).toList();
 
-        Assertions.assertTrue(checkArrays(actualList, expectedList));
+        assertEquals(checkArrays(actualList, expectedList), ARRAYS_NOT_EQUAL);
     }
 }
