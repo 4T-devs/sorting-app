@@ -10,9 +10,6 @@
     </description>
 
     <rule ref="category/java/codestyle.xml"/>
-        <exclude name = "TooManyMethods"/>
-        <exclude name = "LongVariable"/>
-
     <rule ref="category/java/design.xml"/>
     <rule ref="category/java/bestpractices.xml">
         <exclude name="SystemPrintln"/>

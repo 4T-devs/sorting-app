@@ -6,10 +6,10 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "PMD.TooManyMethods"})
 public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
 
-    private static final int DEFAULT_INITIAL_CAPACITY = 10;
+    private static final int INITIAL_CAPACITY = 10;
     private Object[] array;
     private int size;
 
@@ -19,7 +19,7 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
     }
 
     public CustomArrayList() {
-        this(DEFAULT_INITIAL_CAPACITY);
+        this(INITIAL_CAPACITY);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
     }
 
     private void resizeArray() {
-        Object[] newArray = new Object[array.length * 2];
+        final Object[] newArray = new Object[array.length * 2];
         System.arraycopy(array, 0, newArray, 0, array.length);
 
         this.array = newArray;
@@ -53,7 +53,7 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
 
     @Override
     public T remove(final int idx) {
-        T element = get(idx);
+        final T element = get(idx);
         shiftArray(idx);
         return element;
     }
@@ -73,7 +73,7 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("[");
         for (int i = 0; i < size; i++) {
             stringBuilder.append(array[i]);
@@ -140,6 +140,7 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
     }
 
     @Override
+    @SuppressWarnings("PMD.MethodArgumentCouldBeFinal")
     public void forEach(Consumer<? super T> action) {
         for (int i = 0; i < size; i++) {
             action.accept(get(i));

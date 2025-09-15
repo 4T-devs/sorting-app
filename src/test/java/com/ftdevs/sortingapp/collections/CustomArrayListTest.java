@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-@SuppressWarnings("PMD.LinguisticNaming")
+@SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
 final class CustomArrayListTest {
 
     private static final String GET_MESSAGE = "Method get() is incorrect";
@@ -51,33 +51,35 @@ final class CustomArrayListTest {
         final List<Integer> expectedValues = new ArrayList<>();
 
         fillArrays(arrayList, expectedValues, 20);
-        final boolean equals = checkArrays(arrayList, expectedValues);
 
-        assertTrue(equals, ARRAYS_NOT_EQUAL);
+        assertTrue(checkArrays(arrayList, expectedValues), ARRAYS_NOT_EQUAL);
     }
 
     @Test
+    @SuppressWarnings("PMD.LinguisticNaming")
     void getTest() {
 
         final CustomArrayList<Integer> arrayList = new CustomArrayList<>();
         final List<Integer> expectedValues = new ArrayList<>();
 
         fillArrays(arrayList, expectedValues, 20);
-        boolean equals = checkArrays(arrayList, expectedValues);
+        final boolean arraysEquals = checkArrays(arrayList, expectedValues);
+        boolean indexException1 = false;
 
         try {
             arrayList.get(-1);
         } catch (IndexOutOfBoundsException e) {
-            equals = false;
+            indexException1 = true;
         }
 
+        boolean indexException2 = false;
         try {
             arrayList.get(20);
         } catch (IndexOutOfBoundsException e) {
-            equals = false;
+            indexException2 = true;
         }
 
-        assertTrue(equals, GET_MESSAGE);
+        assertTrue(arraysEquals && indexException1 && indexException2, GET_MESSAGE);
     }
 
     @Test
