@@ -18,32 +18,6 @@ final class CustomArrayListTest {
 
     private CustomArrayListTest() {}
 
-    private void fillArrays(
-            final CustomArrayList<Integer> arrayList, final List<Integer> arr, final int range) {
-        for (int i = 0; i < range; i++) {
-            arrayList.add(i);
-            arr.add(i);
-        }
-    }
-
-    private boolean checkArrays(final CustomArrayList<Integer> arrayList, final List<Integer> arr) {
-
-        boolean equals = true;
-
-        if (arrayList.size() != arr.size()) {
-            System.out.println("Размеры массивов не равны");
-            equals = false;
-        }
-
-        for (int i = 0; i < arrayList.size(); i++) {
-            if (!arrayList.get(i).equals(arr.get(i))) {
-                equals = false;
-            }
-        }
-
-        return equals;
-    }
-
     @Test
     void addTest() {
 
@@ -168,5 +142,31 @@ final class CustomArrayListTest {
         arrayList.forEach((v) -> expectedList.add(v * v));
 
         assertEquals(actualList, expectedList, ARRAYS_NOT_EQUAL);
+    }
+
+    private void fillArrays(
+            final CustomArrayList<Integer> arrayList, final List<Integer> arr, final int range) {
+        for (int i = 0; i < range; i++) {
+            arrayList.add(i);
+            arr.add(i);
+        }
+    }
+
+    private boolean checkArrays(final CustomArrayList<Integer> arrayList, final List<Integer> arr) {
+
+        boolean equals = true;
+
+        if (arrayList.size() != arr.size()) {
+            System.out.println("Размеры массивов не равны");
+            equals = false;
+        }
+
+        for (int i = 0; i < arrayList.size(); i++) {
+            if (!arrayList.get(i).equals(arr.get(i))) {
+                equals = false;
+            }
+        }
+
+        return equals;
     }
 }
