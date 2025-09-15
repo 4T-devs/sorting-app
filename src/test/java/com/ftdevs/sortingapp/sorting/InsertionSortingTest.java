@@ -16,6 +16,7 @@ final class InsertionSortingTest {
 
     private static final String INCORRECT_MSG = "Ошибка сортировки";
     private static final String SIZE_MISMATCH_MSG = "Неверный размер коллекции после сортировки";
+    private final Comparator<Integer> comparator = Comparator.comparing(Integer::intValue);
     private ISortStrategy<Integer> insertionSort;
     private CustomArrayList<Integer> testCollection;
 
@@ -28,29 +29,12 @@ final class InsertionSortingTest {
     }
 
     @Test
-    @DisplayName("Сортировка компаратором")
-    void testSortWithComparator() {
-        final Integer[] data = {2, 3, 45, 1, 20, -1, -11, 2};
-        final Comparator<Integer> comparator = Comparator.reverseOrder();
-
-        final List<Integer> expected =
-                Arrays.stream(data).sorted(comparator).collect(Collectors.toList());
-
-        addAllToCollection(data);
-        final InsertionSorting<Integer> sorting = new InsertionSorting<>(comparator);
-
-        sorting.sort(testCollection);
-
-        assertIterableEquals(expected, testCollection, INCORRECT_MSG);
-    }
-
-    @Test
     @DisplayName("Сортировка коллекции с одним элементом")
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testSortSingleElement() {
         testCollection.add(42);
 
-        insertionSort.sort(testCollection);
+        insertionSort.sort(testCollection, comparator);
 
         assertEquals(1, testCollection.size(), SIZE_MISMATCH_MSG);
         assertEquals(42, testCollection.get(0), "Единственный элемент должен остаться неизменным");
@@ -61,7 +45,7 @@ final class InsertionSortingTest {
     @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
     void testSortEmptyCollection() {
         assertDoesNotThrow(
-                () -> insertionSort.sort(testCollection),
+                () -> insertionSort.sort(testCollection, comparator),
                 "Метод должен корректно обрабатывать пустую коллекцию");
         assertEquals(0, testCollection.size(), "Пустая коллекция должна остаться пустой");
     }
@@ -73,7 +57,7 @@ final class InsertionSortingTest {
         final List<Integer> expected = Arrays.stream(data).sorted().collect(Collectors.toList());
 
         addAllToCollection(data);
-        insertionSort.sort(testCollection);
+        insertionSort.sort(testCollection, comparator);
 
         assertIterableEquals(expected, testCollection, INCORRECT_MSG);
     }
@@ -85,7 +69,7 @@ final class InsertionSortingTest {
         final List<Integer> expected = Arrays.stream(data).sorted().collect(Collectors.toList());
 
         addAllToCollection(data);
-        insertionSort.sort(testCollection);
+        insertionSort.sort(testCollection, comparator);
 
         assertIterableEquals(expected, testCollection, INCORRECT_MSG);
     }
@@ -97,7 +81,7 @@ final class InsertionSortingTest {
         final List<Integer> expected = Arrays.stream(data).sorted().collect(Collectors.toList());
 
         addAllToCollection(data);
-        insertionSort.sort(testCollection);
+        insertionSort.sort(testCollection, comparator);
 
         assertIterableEquals(expected, testCollection, INCORRECT_MSG);
     }
@@ -109,7 +93,7 @@ final class InsertionSortingTest {
         final List<Integer> expected = Arrays.asList(data);
 
         addAllToCollection(data);
-        insertionSort.sort(testCollection);
+        insertionSort.sort(testCollection, comparator);
 
         assertIterableEquals(
                 expected,
@@ -124,7 +108,7 @@ final class InsertionSortingTest {
         final List<Integer> expected = Arrays.stream(data).sorted().collect(Collectors.toList());
 
         addAllToCollection(data);
-        insertionSort.sort(testCollection);
+        insertionSort.sort(testCollection, comparator);
 
         assertIterableEquals(expected, testCollection, INCORRECT_MSG);
     }
@@ -133,7 +117,7 @@ final class InsertionSortingTest {
     @DisplayName("Сортировка null коллекции")
     void testSortNullCollection() {
         assertDoesNotThrow(
-                () -> insertionSort.sort(null),
+                () -> insertionSort.sort(null, comparator),
                 "Метод должен корректно обрабатывать null коллекцию");
     }
 
@@ -144,7 +128,7 @@ final class InsertionSortingTest {
         final List<Integer> expected = Arrays.asList(data);
 
         addAllToCollection(data);
-        insertionSort.sort(testCollection);
+        insertionSort.sort(testCollection, comparator);
 
         assertIterableEquals(
                 expected,
