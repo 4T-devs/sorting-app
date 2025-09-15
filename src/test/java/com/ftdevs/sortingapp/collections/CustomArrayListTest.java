@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.function.Consumer;
-
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("PMD.LinguisticNaming")
@@ -41,7 +39,6 @@ final class CustomArrayListTest {
             if (!arrayList.get(i).equals(arr.get(i))) {
                 equals = false;
             }
-
         }
 
         return equals;
@@ -70,16 +67,14 @@ final class CustomArrayListTest {
 
         try {
             arrayList.get(-1);
-            equals = false;
         } catch (IndexOutOfBoundsException e) {
-
+            equals = false;
         }
 
         try {
             arrayList.get(20);
-            equals = false;
         } catch (IndexOutOfBoundsException e) {
-
+            equals = false;
         }
 
         assertTrue(equals, GET_MESSAGE);
