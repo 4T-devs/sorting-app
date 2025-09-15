@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"unchecked", "PMD.TooManyMethods"})
-public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
+public class CustomArrayList<T> implements CustomList<T> {
 
     private static final int INITIAL_CAPACITY = 10;
     private Object[] array;
