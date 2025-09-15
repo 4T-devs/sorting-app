@@ -3,6 +3,7 @@ package com.ftdevs.sortingapp.sorting;
 import com.ftdevs.sortingapp.collections.CustomList;
 import java.util.Comparator;
 
+@SuppressWarnings("PMD.AtLeastOneConstructor")
 public class InsertionSorting<T> implements ISortStrategy<T> {
 
     @Override
