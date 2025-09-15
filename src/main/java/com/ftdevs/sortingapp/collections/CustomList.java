@@ -1,5 +1,6 @@
 package com.ftdevs.sortingapp.collections;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public interface CustomList<T> {
@@ -14,4 +15,6 @@ public interface CustomList<T> {
     int size();
 
     Stream<T> stream();
+
+    void forEach(Consumer<? super T> action);
 }

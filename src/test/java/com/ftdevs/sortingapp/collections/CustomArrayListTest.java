@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
+
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("PMD.LinguisticNaming")
@@ -153,6 +155,21 @@ final class CustomArrayListTest {
         arrayList.stream().filter((i) -> i % 2 == 0).forEach(actualList::add);
         final List<Integer> expectedList = expectedValues.stream().filter(i -> i % 2 == 0).toList();
 
-        assertEquals(checkArrays(actualList, expectedList), ARRAYS_NOT_EQUAL);
+        assertTrue(checkArrays(actualList, expectedList), ARRAYS_NOT_EQUAL);
+    }
+
+    @Test
+    void forEachTest() {
+        final CustomArrayList<Integer> customArrayList = new CustomArrayList<>();
+        final List<Integer> arrayList = new ArrayList<>();
+        fillArrays(customArrayList, arrayList, 10);
+
+        final List<Integer> actualList = new ArrayList<>();
+        final List<Integer> expectedList = new ArrayList<>();
+
+        customArrayList.forEach((v) -> actualList.add(v * v));
+        arrayList.forEach((v) -> expectedList.add(v * v));
+
+        assertEquals(actualList, expectedList, ARRAYS_NOT_EQUAL);
     }
 }

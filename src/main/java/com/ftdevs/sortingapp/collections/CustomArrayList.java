@@ -94,7 +94,7 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
     }
 
     @Override
-    // @SuppressWarnings("PMD.MethodArgumentCouldBeFinal")
+    @SuppressWarnings("PMD.MethodArgumentCouldBeFinal")
     public Iterator<T> iterator() {
 
         return new Iterator<>() {
@@ -137,5 +137,12 @@ public class CustomArrayList<T> implements CustomList<T>, Iterable<T> {
     @Override
     public Stream<T> stream() {
         return IntStream.range(0, size).mapToObj(this::get);
+    }
+
+    @Override
+    public void forEach(Consumer<? super T> action) {
+        for (int i = 0; i < size; i++) {
+            action.accept(get(i));
+        }
     }
 }
