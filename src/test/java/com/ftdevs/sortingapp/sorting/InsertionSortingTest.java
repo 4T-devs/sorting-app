@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.ftdevs.sortingapp.collections.CustomArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,23 @@ final class InsertionSortingTest {
     void setUp() {
         insertionSort = new InsertionSorting<>();
         testCollection = new CustomArrayList<>();
+    }
+
+    @Test
+    @DisplayName("Сортировка компаратором")
+    void testSortWithComparator() {
+        final Integer[] data = {2, 3, 45, 1, 20, -1, -11, 2};
+        final Comparator<Integer> comparator = Comparator.reverseOrder();
+
+        final List<Integer> expected =
+                Arrays.stream(data).sorted(comparator).collect(Collectors.toList());
+
+        addAllToCollection(data);
+        final InsertionSorting<Integer> sorting = new InsertionSorting<>(comparator);
+
+        sorting.sort(testCollection);
+
+        assertIterableEquals(expected, testCollection, INCORRECT_MSG);
     }
 
     @Test
