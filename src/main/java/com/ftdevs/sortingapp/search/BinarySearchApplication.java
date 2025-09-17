@@ -6,9 +6,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Scanner;
 
-public class BinarySearchApplication {
+public final class BinarySearchApplication {
 
     private BinarySearchApplication() {}
+    
     //todo if it is necessary to change the declaration of the comparator,change sort method
     public static void binarySearch(Product[] products, Scanner scanner) {
         while (true) {
