@@ -1,4 +1,4 @@
-package com.ftdevs.sortingapp.BinarySearch;
+package com.ftdevs.sortingapp.search;
 
 import java.util.Comparator;
 
