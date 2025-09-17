@@ -1,4 +1,4 @@
-package com.ftdevs.sortingapp.search;
+package com.ftdevs.sortingapp.BinarySearch;
 
 import com.ftdevs.sortingapp.model.Product;
 
