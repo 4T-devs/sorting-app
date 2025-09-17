@@ -15,16 +15,15 @@ public class SortSelectionState extends MenuInputState { // Меню выбор�
 
         switch (input) {
             case 1 -> { // Алгоритм 1
+                // context.setSortStrategy();
                 return true;
             }
             case 2 -> { // Алгоритм 2
+                // context.setSortStrategy();
                 return true;
             }
-            case 3 -> { // Алгоритм 3
-                return true;
-            }
-            case 4 -> {
-                context.setState(new OptionMenuState());
+            case 0 -> {
+                context.setState(new MainMenuState());
                 return true;
             }
             default -> {
@@ -36,10 +35,9 @@ public class SortSelectionState extends MenuInputState { // Меню выбор�
 
     public SortSelectionState() {
         StringBuilder sb = new StringBuilder();
-        sb.append("(1) Алгоритм 1\n")
-                .append("(2) Алгоритм 2\n")
-                .append("(3) Алгоритм 3\n")
-                .append("(4) Назад\n");
+        sb.append("(1) Быстрая сортировка\n")
+                .append("(2) Сортировка вставками\n")
+                .append("(0) Назад\n");
         menuSelectors = sb.toString();
     }
 }

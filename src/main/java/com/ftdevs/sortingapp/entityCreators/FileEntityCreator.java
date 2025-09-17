@@ -1,16 +1,13 @@
 package com.ftdevs.sortingapp.entityCreators;
 
 import com.ftdevs.sortingapp.entities.Builder;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
-public class FileReader implements ICreationStrategy {
+public class FileEntityCreator implements ICreationStrategy {
 
     @Override
     public String[] createEntities(String input, Class<? extends Builder> type) {
+        // TODO Переработка метода
+        /*
         Path filePath = Paths.get(input);
         if (!Files.exists(filePath)) return new String[0];
         List<String> values = new ArrayList<>();
@@ -22,6 +19,9 @@ public class FileReader implements ICreationStrategy {
         }
 
         return values.toArray(new String[values.size()]);
+
+        */
+        return new String[0];
     }
 
     @Override

@@ -8,11 +8,19 @@ public class EntityCreationConfigState extends MenuInputState {
     public boolean handle(ApplicationContext context) {
         var buffer =
                 context.getCreationStrategy()
-                        .createEntities(context.getInput(), context.getEntityType());
+                        .createEntities(
+                                context.getInput(),
+                                context.getEntityType()); // Создание данных для сущностей с
+        // помощью выбранной стратегии
         var collection = new Object[buffer.length];
-        try {
-            var builder = context.getEntityType().getDeclaredConstructor().newInstance();
-            for (int i = 0; i < buffer.length; i++) {
+        try { // Ввод данных в билдер для создания объектов
+            var builder =
+                    context.getEntityType()
+                            .getDeclaredConstructor()
+                            .newInstance(); // Создание экземпляра билдера выбранной сущности
+            for (int i = 0;
+                    i < buffer.length;
+                    i++) { // Для каждой строки данных вызывается метод build автобилдера
                 collection[i] =
                         context.getEntityType()
                                 .getMethod("build", String.class, String.class)

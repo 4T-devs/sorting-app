@@ -5,7 +5,8 @@ import com.ftdevs.sortingapp.applicationMenu.MenuInputState;
 import com.ftdevs.sortingapp.entities.Builder;
 import com.ftdevs.sortingapp.entities.Entity;
 import com.ftdevs.sortingapp.entityCreators.ICreationStrategy;
-import com.ftdevs.sortingapp.sorting.ISortStrategy;
+import com.ftdevs.sortingapp.sorting.ISortStrategyPlaceholder;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public class ApplicationContext {
@@ -15,11 +16,13 @@ public class ApplicationContext {
 
     private Object[] collection;
 
-    private ISortStrategy sortStrategy;
+    private ISortStrategyPlaceholder sortStrategy;
 
     private ICreationStrategy creationStrategy;
 
     private Class<? extends Builder> entityType;
+
+    private Field sortField;
 
     public boolean handle() {
         return state.handle(this);
@@ -53,11 +56,11 @@ public class ApplicationContext {
         return Arrays.copyOf(collection, collection.length);
     }
 
-    public void setSortStrategy(final ISortStrategy sortStrategy) {
+    public void setSortStrategy(final ISortStrategyPlaceholder sortStrategy) {
         this.sortStrategy = sortStrategy;
     }
 
-    public ISortStrategy getSortStrategy() {
+    public ISortStrategyPlaceholder getSortStrategy() {
         return sortStrategy;
     }
 
@@ -88,18 +91,28 @@ public class ApplicationContext {
     }
 
     public void printObjects() {
-        try {
+        if (collection != null && collection.length > 0)
             for (var i : collection) IOSingleton.getInstance().printLine(i.toString());
-        } catch (Exception ex) {
-            IOSingleton.getInstance().printLine("Список объектов пуст");
-        }
+        else IOSingleton.getInstance().printLine("Список объектов пуст");
     }
 
     public void sort() {
-        collection = sortStrategy.sort(collection);
+        if (collection != null && collection.length > 0) collection = sortStrategy.sort(collection);
     }
 
     public void printMenu() {
         IOSingleton.getInstance().printLine(state.getMenu());
+    }
+
+    public void printHeader() {
+        IOSingleton.getInstance().printLine("===| Приложение сортировки продуктов |===\n");
+    }
+
+    public Field getSortField() {
+        return sortField;
+    }
+
+    public void setSortField(Field sortField) {
+        this.sortField = sortField;
     }
 }

@@ -2,7 +2,7 @@ package com.ftdevs.sortingapp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.ftdevs.sortingapp.applicationMenu.OptionMenuState;
+import com.ftdevs.sortingapp.applicationMenu.EntitySearchState;
 import com.ftdevs.sortingapp.entities.Entity;
 import java.io.*;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ final class ApplicationContextTest {
         final String menu1 = outputStream.toString();
         outputStream.reset();
 
-        context.setState(new OptionMenuState());
+        context.setState(new EntitySearchState(context));
         context.printMenu();
         final String menu2 = outputStream.toString();
 
@@ -39,8 +39,9 @@ final class ApplicationContextTest {
     @Test
     void applicationExitTest() {
         final ApplicationContext context = new ApplicationContext();
+        IOSingleton.getInstance().setOutput(System.out);
 
-        final String input = "5";
+        final String input = "0";
 
         context.setInput(input);
         context.handle();
@@ -52,7 +53,7 @@ final class ApplicationContextTest {
     void applicationAddItemsTest() {
         IOSingleton.getInstance().setOutput(System.out);
         final ApplicationContext context = new ApplicationContext();
-        final String input = "2 2 10";
+        final String input = "1 2 10";
         final var commands = input.split(" ");
 
         for (String command : commands) {
@@ -74,17 +75,17 @@ final class ApplicationContextTest {
     }
 
     @Test
-    void applicationMenuWalkerTest() {
+    void applicationMenuWalkerTest() { // Тест с обходом всего меню
         IOSingleton.getInstance().setOutput(System.out);
         final ApplicationContext context = new ApplicationContext();
-        final String input = "6 1 2 5 4 4 1 1 2 3 5 4 2 1 2 3 5 4 4 3 5";
+        final String input = "1 0 2 0 3 4 0 5 6 7 0";
         for (var c : input.split(" ")) {
+            context.printHeader();
             context.printMenu();
             IOSingleton.getInstance().printLine(c);
             context.setInput(c);
             context.handle();
         }
-
         assertTrue(!context.isExit(), "Application menu successful walked");
     }
 }

@@ -7,22 +7,24 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 
-final class SorterMainTest {
-
-    private SorterMainTest() {}
+final class ProductSortingApplicationTest {
 
     @Test
-    void printHelloWorld() {
+    void applicationRunTest() {
         final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         final PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
 
-        String input = "2\n4\n5\n";
+        IOSingleton.getInstance().setOutput(originalOut);
+
+        String input = "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 
         try {
-            SorterMain.main(new String[] {});
-            assertTrue(outContent.toString().contains("END"), "End of program");
+            ProductSortingApplication.main(new String[] {});
+            assertTrue(
+                    outContent.toString().contains("Exit code 0"),
+                    "Expected \"Exit code 0\"\nbut was " + outContent.toString());
         } finally {
             System.setOut(originalOut);
         }

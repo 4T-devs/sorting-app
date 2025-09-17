@@ -1,7 +1,7 @@
 package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
-import com.ftdevs.sortingapp.entityCreators.FileReader;
+import com.ftdevs.sortingapp.entityCreators.FileEntityCreator;
 import com.ftdevs.sortingapp.entityCreators.HandInput;
 import com.ftdevs.sortingapp.entityCreators.RandomCreator;
 import com.ftdevs.sortingapp.validation.InputValidator;
@@ -17,7 +17,7 @@ public class EntityCreationState extends MenuInputState { // Меню выбор
 
         switch (input) {
             case 1 -> { // Чтение объектов из файла
-                context.setCreationStrategy(new FileReader());
+                context.setCreationStrategy(new FileEntityCreator());
             }
             case 2 -> { // Случайная генерация объектов
                 context.setCreationStrategy(new RandomCreator());
@@ -25,7 +25,7 @@ public class EntityCreationState extends MenuInputState { // Меню выбор
             case 3 -> { // Ручное заполнение объектов
                 context.setCreationStrategy(new HandInput());
             }
-            case 4 -> {
+            case 0 -> {
                 context.setState(new MainMenuState());
                 return true;
             }
@@ -43,7 +43,7 @@ public class EntityCreationState extends MenuInputState { // Меню выбор
         sb.append("(1) Чтение объектов из файла\n")
                 .append("(2) Генерация случайных объектов\n")
                 .append("(3) Ручное заполнение объектов\n")
-                .append("(4) Назад\n");
+                .append("(0) Назад\n");
         menuSelectors = sb.toString();
     }
 }
