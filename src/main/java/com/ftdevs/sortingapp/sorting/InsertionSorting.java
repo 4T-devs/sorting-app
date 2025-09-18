@@ -1,5 +1,6 @@
 package com.ftdevs.sortingapp.sorting;
 
+import com.ftdevs.sortingapp.collections.CustomArrayList;
 import com.ftdevs.sortingapp.collections.CustomList;
 import java.util.Comparator;
 
@@ -23,5 +24,6 @@ public class InsertionSorting<T> implements ISortStrategy<T> {
 
             collection.set(idx + 1, key);
         }
+        
     }
 }
