@@ -2,7 +2,6 @@ package com.ftdevs.sortingapp.sorting;
 
 import com.ftdevs.sortingapp.collections.CustomArrayList;
 import com.ftdevs.sortingapp.collections.CustomList;
-
 import java.util.Comparator;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
@@ -11,19 +10,19 @@ public class ParallelSorting<T> implements ISortStrategy<T> {
     private final ISortStrategy<T> sortStrategy;
     private final int threshold;
 
-    public ParallelSorting(ISortStrategy<T> sortStrategy, int threshold) {
+    public ParallelSorting(final ISortStrategy<T> sortStrategy, final int threshold) {
         this.sortStrategy = sortStrategy;
         this.threshold = threshold;
     }
 
-    public ParallelSorting(ISortStrategy<T> sortStrategy) {
+    public ParallelSorting(final ISortStrategy<T> sortStrategy) {
         this(sortStrategy, 10);
     }
 
     @Override
-    public void sort(CustomList<T> collection, Comparator<T> comparator) {
-        try(ForkJoinPool forkJoinPool = ForkJoinPool.commonPool()) {
-            if(collection == null || collection.size() <= 1 || comparator == null) {
+    public void sort(final CustomList<T> collection, final Comparator<T> comparator) {
+        try (ForkJoinPool forkJoinPool = ForkJoinPool.commonPool()) {
+            if (collection == null || collection.size() <= 1 || comparator == null) {
                 return;
             }
             forkJoinPool.invoke(new SortTask(collection, comparator, 0, collection.size() - 1));
@@ -36,7 +35,12 @@ public class ParallelSorting<T> implements ISortStrategy<T> {
         private final int left;
         private final int right;
 
-        public SortTask(CustomList<T> list, Comparator<T> comparator, int left, int right) {
+        public SortTask(
+                final CustomList<T> list,
+                final Comparator<T> comparator,
+                final int left,
+                final int right) {
+            super();
             this.list = list;
             this.comparator = comparator;
             this.left = left;
@@ -45,71 +49,54 @@ public class ParallelSorting<T> implements ISortStrategy<T> {
 
         @Override
         protected void compute() {
-            CustomList<T> result = new CustomArrayList<>();
-            int size = right - left + 1;
-            if(size <= threshold) {
+            final CustomList<T> result = new CustomArrayList<>();
+            final int size = right - left + 1;
+            if (size <= threshold) {
                 for (int i = left; i <= right; i++) {
                     result.add(list.get(i));
                 }
                 sortStrategy.sort(result, comparator);
 
                 int idx = 0;
-                for(int i = left; i <= right; i++) {
+                for (int i = left; i <= right; i++) {
                     list.set(i, result.get(idx++));
                 }
 
             } else {
-                int mid = (left + right) / 2;
-                SortTask leftTask = new SortTask(list, comparator, left, mid);
-                SortTask rightTask = new SortTask(list, comparator, mid + 1, right);
+                final int mid = (left + right) / 2;
+                final SortTask leftTask = new SortTask(list, comparator, left, mid);
+                final SortTask rightTask = new SortTask(list, comparator, mid + 1, right);
                 invokeAll(leftTask, rightTask);
                 mergeLists(list, left, mid, right);
             }
         }
 
-        private void mergeLists(CustomList<T> list, int left, int mid, int right) {
-            CustomList<T> tempList = new CustomArrayList<>(right - left + 1);
+        private void mergeLists(
+                final CustomList<T> list, final int left, final int mid, final int right) {
+            final CustomList<T> tempList = new CustomArrayList<>(right - left + 1);
 
-            int i = left;
-            int j = mid + 1;
-            while (i <= mid && j <= right) {
-                if(comparator.compare(list.get(i), list.get(j)) < 0) {
-                    tempList.add(list.get(i++));
+            int leftArrIndex = left;
+            int rightArrIndex = mid + 1;
+            while (leftArrIndex <= mid && rightArrIndex <= right) {
+                if (comparator.compare(list.get(leftArrIndex), list.get(rightArrIndex)) < 0) {
+                    tempList.add(list.get(leftArrIndex++));
                 } else {
-                    tempList.add(list.get(j++));
+                    tempList.add(list.get(rightArrIndex++));
                 }
             }
 
-            while (i <= mid) {
-                tempList.add(list.get(i++));
+            while (leftArrIndex <= mid) {
+                tempList.add(list.get(leftArrIndex++));
             }
 
-            while (j <= right) {
-                tempList.add(list.get(j++));
+            while (rightArrIndex <= right) {
+                tempList.add(list.get(rightArrIndex++));
             }
 
             int idx = 0;
-            for(int k = left; k <= right; k++) {
+            for (int k = left; k <= right; k++) {
                 list.set(k, tempList.get(idx++));
             }
-        }
-    }
-
-    public static void main(String[] args) {
-        ParallelSorting<Integer> parallelSorting = new ParallelSorting<>(new InsertionSorting<>());
-        CustomList<Integer> listToSort = new CustomArrayList<>();
-
-//        for(int i = 100; i > 0; i--) {
-//            listToSort.add(i);
-//        }
-//
-//        for(int i = 0; i < 100; i++) {
-//            listToSort.add(i);
-//        }
-        parallelSorting.sort(listToSort, Integer::compareTo);
-
-        for(int i = 0; i < listToSort.size(); i++) {
-            System.out.println(listToSort.get(i));
         }
     }
 }
