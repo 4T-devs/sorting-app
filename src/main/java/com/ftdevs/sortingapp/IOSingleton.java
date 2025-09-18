@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-public final class IOSingleton { // Синглтон для ввода и вывода, создан для того, чтобы обеспечить удобство при
+public final class IOSingleton {
     // тестировании
 
     private static IOSingleton instance;
