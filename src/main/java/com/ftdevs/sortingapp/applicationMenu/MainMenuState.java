@@ -39,6 +39,7 @@ public class MainMenuState extends MenuInputState {
                 return true;
             }
             case 7 -> { // Подсчитать вхождения
+                context.setState(new EntityCountingState(context));
                 return true;
             }
             case 0 -> { // Выход

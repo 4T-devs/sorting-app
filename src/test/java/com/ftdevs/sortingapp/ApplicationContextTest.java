@@ -78,7 +78,7 @@ final class ApplicationContextTest {
     void applicationMenuWalkerTest() { // Тест с обходом всего меню
         IOSingleton.getInstance().setOutput(System.out);
         final ApplicationContext context = new ApplicationContext();
-        final String input = "1 0 2 0 3 4 0 5 6 7 0";
+        final String input = "1 0 2 0 3 4 0 5 6 7 10,1,1 0";
         for (var c : input.split(" ")) {
             context.printHeader();
             context.printMenu();
