@@ -148,6 +148,15 @@ final class MultithreadSortingTest {
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
     }
 
+    @Test
+    void testSortWithNegativeNumberOfThreads() {
+        fillArraysWithRandom(customList, expectedList, 1011);
+        multithreadSorting.setNumThreads(-10);
+        multithreadSorting.sort(customList, comparator);
+        expectedList.sort(comparator);
+        assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
+    }
+
     @SuppressWarnings("PMD.ShortVariable")
     private void fillArrays(
             final CustomList<Integer> list1,

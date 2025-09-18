@@ -22,7 +22,7 @@ public class MultithreadSorting<T> implements ISortStrategy<T> {
     }
 
     public void setNumThreads(final int numThreads) {
-        this.numThreads = numThreads;
+        this.numThreads = numThreads <= 0 ? 1 : numThreads;
     }
 
     public int getNumThreads() {
