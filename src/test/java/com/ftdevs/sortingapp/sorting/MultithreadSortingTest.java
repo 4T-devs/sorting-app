@@ -1,22 +1,24 @@
 package com.ftdevs.sortingapp.sorting;
 
-import com.ftdevs.sortingapp.collections.CustomArrayList;
-import com.ftdevs.sortingapp.collections.CustomList;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
-class MultithreadSortingTest {
+import com.ftdevs.sortingapp.collections.CustomArrayList;
+import com.ftdevs.sortingapp.collections.CustomList;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+@SuppressWarnings("PMD.TooManyMethods")
+final class MultithreadSortingTest {
     private static final String ARRAYS_NOT_EQUAL = "Arrays should be equals";
     private Comparator<Integer> comparator;
     private CustomList<Integer> customList;
     private List<Integer> expectedList;
+
+    @SuppressWarnings("PMD.LongVariable")
     private MultithreadSorting<Integer> multithreadSorting;
 
     private MultithreadSortingTest() {}
@@ -89,7 +91,7 @@ class MultithreadSortingTest {
     @SuppressWarnings("PMD.LongVariable")
     void testSortWithNegativeNumbersInList() {
         final int[] arrWithNegatives = {
-                20, -1, 50, -3, -4, 200, -60, 347, -47, -3, -1, 0, 0, 2, 4, -9, -43
+            20, -1, 50, -3, -4, 200, -60, 347, -47, -3, -1, 0, 0, 2, 4, -9, -43
         };
         addToCollection(customList, expectedList, arrWithNegatives);
         multithreadSorting.sort(customList, comparator);
@@ -145,7 +147,6 @@ class MultithreadSortingTest {
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
     }
-
 
     @SuppressWarnings("PMD.ShortVariable")
     private void fillArrays(
