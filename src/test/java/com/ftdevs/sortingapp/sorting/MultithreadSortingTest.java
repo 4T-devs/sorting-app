@@ -52,7 +52,7 @@ final class MultithreadSortingTest {
     }
 
     @Test
-    void testSizeLessThanThreshold() {
+    void testSmallArray() {
         fillArraysWithRandom(customList, expectedList, 9);
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
@@ -61,7 +61,7 @@ final class MultithreadSortingTest {
     }
 
     @Test
-    void testSizeGreaterThanThreshold() {
+    void testLargeArray() {
         fillArraysWithRandom(customList, expectedList, 100_005);
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
