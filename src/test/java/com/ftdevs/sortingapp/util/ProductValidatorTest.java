@@ -208,8 +208,8 @@ final class ProductValidatorTest {
 
     @Test
     void validateProductValidDataReturnsTrue() {
-        assertTrue(
-                ProductValidator.validateProduct("TEST-123", "Test Product", "99.99"),
+        assertDoesNotThrow(
+                () -> ProductValidator.validateProduct("TEST-123", "Test Product", "99.99"),
                 INCORRECT_MSG);
     }
 

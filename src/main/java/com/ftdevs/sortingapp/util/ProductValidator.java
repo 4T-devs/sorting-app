@@ -4,8 +4,10 @@ import com.ftdevs.sortingapp.model.Product;
 
 public final class ProductValidator {
     private static final String SKU_PATTERN = "^[A-Z][A-Z0-9-/]{0,19}$";
+    private static final int MAX_SKU_LENGTH = 20;
     private static final int MAX_NAME_LENGTH = 100;
     private static final int MAX_PRICE = 1_000_000;
+    private static final int MIN_PRICE = 0;
 
     private ProductValidator() {}
 
@@ -21,9 +23,9 @@ public final class ProductValidator {
             throw new IllegalArgumentException("SKU не может быть null или пустым");
         }
 
-        if (sku.length() > 20) {
+        if (sku.length() > MAX_SKU_LENGTH) {
             throw new IllegalArgumentException(
-                    "SKU не может быть длиннее 20 символов. Текущая длина: " + sku.length());
+                    "SKU не может быть длиннее " + MAX_SKU_LENGTH + " символов");
         }
 
         if (!sku.matches(SKU_PATTERN)) {
@@ -48,10 +50,7 @@ public final class ProductValidator {
 
         if (name.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException(
-                    "Название продукта не может быть длиннее "
-                            + MAX_NAME_LENGTH
-                            + " символов. Текущая длина: "
-                            + name.length());
+                    "Название продукта не может быть длиннее " + MAX_NAME_LENGTH + " символов.");
         }
 
         return true;
@@ -85,7 +84,7 @@ public final class ProductValidator {
      * @throws IllegalArgumentException с описанием ошибки
      */
     public static boolean validatePrice(final double price) {
-        if (price < 0) {
+        if (price < MIN_PRICE) {
             throw new IllegalArgumentException(
                     "Цена не может быть отрицательной. Получено: " + price);
         }
@@ -109,15 +108,9 @@ public final class ProductValidator {
      */
     public static Product createProduct(
             final String sku, final String name, final String priceStr) {
-        // Валидация всех полей
-        validateSku(sku);
-        validateName(name);
-        validatePrice(priceStr);
-
-        // Парсинг цены
+        validateProduct(sku, name, priceStr);
         final double price = Double.parseDouble(priceStr);
 
-        // Создание и возврат продукта
         return Product.builder().sku(sku).name(name).price(price).build();
     }
 
@@ -127,14 +120,11 @@ public final class ProductValidator {
      * @param sku SKU продукта
      * @param name название продукта
      * @param priceStr цена продукта в виде строки
-     * @return true если все поля валидны, иначе бросает исключение
      * @throws IllegalArgumentException если любое из полей невалидно
      */
-    public static boolean validateProduct(
-            final String sku, final String name, final String priceStr) {
+    public static void validateProduct(final String sku, final String name, final String priceStr) {
         validateSku(sku);
         validateName(name);
         validatePrice(priceStr);
-        return true;
     }
 }
