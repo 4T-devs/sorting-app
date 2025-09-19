@@ -152,5 +152,4 @@ public class MultithreadSorting<T> implements ISortStrategy<T> {
     private int calculateThreads() {
         return Runtime.getRuntime().availableProcessors();
     }
-
 }
