@@ -26,11 +26,12 @@ public class ProductCountingState extends MenuInputState {
 
         System.out.println(String.format("Количество заданных объектов: %d", counter));
         context.setState(new MainMenuState());
+        context.setInputNeed(true);
         return true;
     }
 
     public ProductCountingState() {
-        menuSelectors = "Перед подсчетом необходимо создать объект\nдля продолжения введите пробел";
+        menuSelectors = "Перед подсчетом необходимо создать объект";
     }
 
     private Product getProductForCounting() {

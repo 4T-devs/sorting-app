@@ -19,6 +19,8 @@ public class ApplicationContext {
 
     private ICreationStrategy creationStrategy;
 
+    private boolean isInputNeed = true;
+
     private Field sortField;
 
     public boolean handle() {
@@ -107,5 +109,13 @@ public class ApplicationContext {
 
     public void setSortField(Field sortField) {
         this.sortField = sortField;
+    }
+
+    public boolean isInputNeed() {
+        return isInputNeed;
+    }
+
+    public void setInputNeed(boolean isInputNeed) {
+        this.isInputNeed = isInputNeed;
     }
 }

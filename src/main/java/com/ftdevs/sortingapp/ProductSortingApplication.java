@@ -19,7 +19,8 @@ public final class ProductSortingApplication {
             while (context.isExit()) {
                 context.printHeader(); // Вывод шапки программы
                 context.printMenu(); // Вывод текущего меню
-                context.setInput(scanner.nextLine()); // Получение пользовательского ввода
+                if (context.isInputNeed())
+                    context.setInput(scanner.nextLine()); // Получение пользовательского ввода
                 if (!context.handle())
                     context.printError(); // Вывод ошибки, если пользователь ввел недопустимые
                 // параметры

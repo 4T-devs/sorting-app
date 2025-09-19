@@ -16,7 +16,7 @@ public class HandInput implements ICreationStrategy {
 
     @Override
     public String getMessage() {
-        return "Ручное создание объектов. Для выхода введите 'stop'. Для продолжения введите пробел";
+        return "Ручное создание объектов. Для выхода введите 'stop'";
     }
 
     private CustomArrayList<Product> handleCreation() {

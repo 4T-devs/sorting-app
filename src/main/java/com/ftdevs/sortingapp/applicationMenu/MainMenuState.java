@@ -38,6 +38,7 @@ public class MainMenuState extends MenuInputState {
                 return true;
             }
             case 7 -> { // Подсчитать вхождения
+                context.setInputNeed(false);
                 context.setState(new ProductCountingState());
                 return true;
             }

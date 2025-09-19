@@ -24,6 +24,7 @@ public class ProductCreationState extends MenuInputState { // Меню выбо�
             }
             case 3 -> { // Ручное заполнение объектов
                 context.setCreationStrategy(new HandInput());
+                context.setInputNeed(false);
             }
             case 0 -> {
                 context.setState(new MainMenuState());

@@ -8,6 +8,7 @@ public class ProductConfigState extends MenuInputState {
         context.setCollection(context.getCreationStrategy().createProducts(context.getInput()));
 
         context.setState(new MainMenuState());
+        context.setInputNeed(true);
         return true;
     }
 

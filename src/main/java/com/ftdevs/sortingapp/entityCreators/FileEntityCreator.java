@@ -27,6 +27,6 @@ public class FileEntityCreator implements ICreationStrategy {
 
     @Override
     public String getMessage() {
-        return "Введите путь к файлу формата .csv";
+        return "Введите название файла";
     }
 }

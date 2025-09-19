@@ -44,7 +44,7 @@ final class ApplicationContextTest {
         context.setInput(input);
         context.handle();
 
-        assertTrue(!context.isExit(), "Exit successful");
+        assertTrue(!context.isExit(), "Exit failed");
     }
 
     @Test
@@ -72,16 +72,22 @@ final class ApplicationContextTest {
         System.setOut(originalInput);
 
         final ApplicationContext context = new ApplicationContext();
-        final String input = "1_0_2_0_3_4_0_5_6_7_ _0";
+        final String input = "1 0 2 0 3 4 0 5 6 7 0";
         System.setIn(new ByteArrayInputStream("article\nproduct\n3.14".getBytes()));
 
-        for (var c : input.split("_")) {
+        int commandHead = 0;
+        String[] commands = input.split(" ");
+        while (commandHead < commands.length) {
             context.printHeader();
             context.printMenu();
-            System.out.println(c);
-            context.setInput(c);
+            if (context.isInputNeed()) {
+                System.out.println(commands[commandHead]);
+                context.setInput(commands[commandHead]);
+                commandHead++;
+            }
             context.handle();
         }
-        assertTrue(!context.isExit(), "Application menu successful walked");
+
+        assertTrue(!context.isExit(), "Application has not been shutdown");
     }
 }
