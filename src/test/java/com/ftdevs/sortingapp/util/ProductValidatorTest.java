@@ -9,20 +9,24 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-@SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
-class ProductValidatorTest {
+@SuppressWarnings({"PMD.UnitTestContainsTooManyAsserts",
+        "PMD.TooManyMethods"})
+final class ProductValidatorTest {
+    private final String DefaultMessage = "Ошибка валидации";
+
+    private ProductValidatorTest() {}
 
     @Test
-    void validateSku_ValidSku_ReturnsTrue() {
-        assertTrue(ProductValidator.validateSku("ABC-123/456"));
-        assertTrue(ProductValidator.validateSku("TEST-001"));
-        assertTrue(ProductValidator.validateSku("PRODUCT-2024"));
-        assertTrue(ProductValidator.validateSku("A")); // минимальная длина
+    void validateSkuValidSkuReturnsTrue() {
+        assertTrue(ProductValidator.validateSku("ABC-123/456"), DefaultMessage);
+        assertTrue(ProductValidator.validateSku("TEST-001"), DefaultMessage);
+        assertTrue(ProductValidator.validateSku("PRODUCT-2024"), DefaultMessage);
+        assertTrue(ProductValidator.validateSku("A"), DefaultMessage); // минимальная длина
     }
 
     @ParameterizedTest
     @NullAndEmptySource
-    void validateSku_NullOrEmptySku_ThrowsException(String sku) {
+    void validateSkuNullOrEmptySkuThrowsException(String sku) {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class, () -> ProductValidator.validateSku(sku));
@@ -36,7 +40,7 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validateSku(longSku));
+                        () -> ProductValidator.validateSku(longSku), DefaultMessage);
         assertTrue(exception.getMessage().contains("20 символов"));
     }
 
@@ -54,18 +58,17 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validateSku(invalidSku));
+                        () -> ProductValidator.validateSku(invalidSku), DefaultMessage);
         assertTrue(
                 exception.getMessage().contains("недопустимые символы")
                         || exception.getMessage().contains("не может быть null или пустым"));
     }
 
-    // Тесты для validateName()
     @Test
     void validateName_ValidName_ReturnsTrue() {
-        assertTrue(ProductValidator.validateName("Test Product"));
-        assertTrue(ProductValidator.validateName("A")); // минимальная длина
-        assertTrue(ProductValidator.validateName("Product Name with Spaces and Numbers 123"));
+        assertTrue(ProductValidator.validateName("Test Product"), DefaultMessage);
+        assertTrue(ProductValidator.validateName("A"), DefaultMessage); // минимальная длина
+        assertTrue(ProductValidator.validateName("Product Name with Spaces and Numbers 123"), DefaultMessage);
     }
 
     @ParameterizedTest
@@ -73,7 +76,7 @@ class ProductValidatorTest {
     void validateName_NullOrEmptyName_ThrowsException(String name) {
         IllegalArgumentException exception =
                 assertThrows(
-                        IllegalArgumentException.class, () -> ProductValidator.validateName(name));
+                        IllegalArgumentException.class, () -> ProductValidator.validateName(name), DefaultMessage);
         assertTrue(
                 exception.getMessage().contains("Название продукта не может быть null или пустым"));
     }
@@ -85,17 +88,16 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validateName(longName));
+                        () -> ProductValidator.validateName(longName), DefaultMessage);
         assertTrue(exception.getMessage().contains("100 символов"));
     }
 
-    // Тесты для validatePrice(String)
     @Test
     void validatePriceString_ValidPrice_ReturnsTrue() {
-        assertTrue(ProductValidator.validatePrice("0"));
-        assertTrue(ProductValidator.validatePrice("99.99"));
-        assertTrue(ProductValidator.validatePrice("1000000")); // максимальная цена
-        assertTrue(ProductValidator.validatePrice("123.456"));
+        assertTrue(ProductValidator.validatePrice("0"), DefaultMessage);
+        assertTrue(ProductValidator.validatePrice("99.99"), DefaultMessage);
+        assertTrue(ProductValidator.validatePrice("1000000"), DefaultMessage); // максимальная цена
+        assertTrue(ProductValidator.validatePrice("123.456"), DefaultMessage);
     }
 
     @ParameterizedTest
@@ -104,7 +106,7 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validatePrice(price));
+                        () -> ProductValidator.validatePrice(price), DefaultMessage);
         assertTrue(exception.getMessage().contains("Цена не может быть null или пустой"));
     }
 
@@ -113,7 +115,7 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validatePrice("not-a-number"));
+                        () -> ProductValidator.validatePrice("not-a-number"), DefaultMessage);
         assertTrue(exception.getMessage().contains("Цена должна быть числом"));
     }
 
@@ -122,7 +124,7 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validatePrice("-10.50"));
+                        () -> ProductValidator.validatePrice("-10.50"), DefaultMessage);
         assertTrue(exception.getMessage().contains("Цена не может быть отрицательной"));
     }
 
@@ -131,24 +133,23 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validatePrice("1000001"));
+                        () -> ProductValidator.validatePrice("1000001"), DefaultMessage);
         assertTrue(exception.getMessage().contains("Цена не может превышать"));
     }
 
-    // Тесты для validatePrice(double)
     @Test
     void validatePriceDouble_ValidPrice_ReturnsTrue() {
-        assertTrue(ProductValidator.validatePrice(0.0));
-        assertTrue(ProductValidator.validatePrice(99.99));
-        assertTrue(ProductValidator.validatePrice(1000000.0)); // максимальная цена
+        assertTrue(ProductValidator.validatePrice(0.0), DefaultMessage);
+        assertTrue(ProductValidator.validatePrice(99.99), DefaultMessage);
+        assertTrue(ProductValidator.validatePrice(1000000.0), DefaultMessage); // максимальная цена
     }
 
     @Test
     void validatePriceDouble_NegativePrice_ThrowsException() {
         IllegalArgumentException exception =
                 assertThrows(
-                        IllegalArgumentException.class, () -> ProductValidator.validatePrice(-5.0));
-        assertTrue(exception.getMessage().contains("Цена не может быть отрицательной"));
+                        IllegalArgumentException.class, () -> ProductValidator.validatePrice(-5.0), DefaultMessage);
+        assertTrue(exception.getMessage().contains("Цена не может быть отрицательной"), DefaultMessage);
     }
 
     @Test
@@ -156,56 +157,53 @@ class ProductValidatorTest {
         IllegalArgumentException exception =
                 assertThrows(
                         IllegalArgumentException.class,
-                        () -> ProductValidator.validatePrice(1000000.1));
-        assertTrue(exception.getMessage().contains("Цена не может превышать"));
+                        () -> ProductValidator.validatePrice(1000000.1), DefaultMessage);
+        assertTrue(exception.getMessage().contains("Цена не может превышать"), DefaultMessage);
     }
 
-    // Тесты для createProduct()
     @Test
     void createProduct_ValidData_ReturnsProductObject() {
         Product product = ProductValidator.createProduct("TEST-123", "Test Product", "99.99");
 
         assertNotNull(product);
-        assertEquals("TEST-123", product.getSku());
-        assertEquals("Test Product", product.getName());
-        assertEquals(99.99, product.getPrice(), 0.001);
+        assertEquals("TEST-123", product.getSku(), DefaultMessage);
+        assertEquals("Test Product", product.getName(), DefaultMessage);
+        assertEquals(99.99, product.getPrice(), 0.001, DefaultMessage);
     }
 
     @Test
     void createProduct_InvalidSku_ThrowsException() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> ProductValidator.createProduct("123-TEST", "Test Product", "99.99"));
+                () -> ProductValidator.createProduct("123-TEST", "Test Product", "99.99"), DefaultMessage);
     }
 
     @Test
     void createProduct_InvalidName_ThrowsException() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> ProductValidator.createProduct("TEST-123", "", "99.99"));
+                () -> ProductValidator.createProduct("TEST-123", "", "99.99"), DefaultMessage);
     }
 
     @Test
     void createProduct_InvalidPrice_ThrowsException() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> ProductValidator.createProduct("TEST-123", "Test Product", "-10"));
+                () -> ProductValidator.createProduct("TEST-123", "Test Product", "-10"), DefaultMessage);
     }
 
-    // Тесты для validateProduct()
     @Test
     void validateProduct_ValidData_ReturnsTrue() {
-        assertTrue(ProductValidator.validateProduct("TEST-123", "Test Product", "99.99"));
+        assertTrue(ProductValidator.validateProduct("TEST-123", "Test Product", "99.99"), DefaultMessage);
     }
 
     @Test
     void validateProduct_InvalidData_ThrowsException() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> ProductValidator.validateProduct("invalid", "Test Product", "99.99"));
+                () -> ProductValidator.validateProduct("invalid", "Test Product", "99.99"), DefaultMessage);
     }
 
-    // Параметризованные тесты для различных сценариев
     @ParameterizedTest
     @CsvSource({
         "ABC-123/456, 'Test Product', 99.99, true",
@@ -216,37 +214,35 @@ class ProductValidatorTest {
     })
     void comprehensiveTest(String sku, String name, String price, boolean expectedValid) {
         if (expectedValid) {
-            assertDoesNotThrow(() -> ProductValidator.createProduct(sku, name, price));
+            assertDoesNotThrow(() -> ProductValidator.createProduct(sku, name, price), DefaultMessage);
         } else {
             assertThrows(
                     IllegalArgumentException.class,
-                    () -> ProductValidator.createProduct(sku, name, price));
+                    () -> ProductValidator.createProduct(sku, name, price), DefaultMessage);
         }
     }
 
-    // Тест на граничные значения для длины имени
     @Test
     void validateName_BoundaryValues() {
         // Максимально допустимая длина
         String maxLengthName = "A".repeat(100);
-        assertTrue(ProductValidator.validateName(maxLengthName));
+        assertTrue(ProductValidator.validateName(maxLengthName), DefaultMessage);
 
         // Превышение максимальной длины
         String tooLongName = "A".repeat(101);
         assertThrows(
-                IllegalArgumentException.class, () -> ProductValidator.validateName(tooLongName));
+                IllegalArgumentException.class, () -> ProductValidator.validateName(tooLongName), DefaultMessage);
     }
 
-    // Тест на граничные значения для цены
     @Test
     void validatePrice_BoundaryValues() {
         // Граничные значения
-        assertTrue(ProductValidator.validatePrice(0.0));
-        assertTrue(ProductValidator.validatePrice(1000000.0));
+        assertTrue(ProductValidator.validatePrice(0.0), DefaultMessage);
+        assertTrue(ProductValidator.validatePrice(1000000.0), DefaultMessage);
 
         // За границами
-        assertThrows(IllegalArgumentException.class, () -> ProductValidator.validatePrice(-0.1));
+        assertThrows(IllegalArgumentException.class, () -> ProductValidator.validatePrice(-0.1), DefaultMessage);
         assertThrows(
-                IllegalArgumentException.class, () -> ProductValidator.validatePrice(1000000.1));
+                IllegalArgumentException.class, () -> ProductValidator.validatePrice(1000000.1), DefaultMessage);
     }
 }

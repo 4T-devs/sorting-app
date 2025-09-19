@@ -2,13 +2,12 @@ package com.ftdevs.sortingapp.util;
 
 import com.ftdevs.sortingapp.model.Product;
 
-public class ProductValidator {
-
-    private ProductValidator() { }
-    // Регулярное выражение для валидации SKU
+public final class ProductValidator {
     private static final String SKU_PATTERN = "^[A-Z][A-Z0-9-/]{0,19}$";
     private static final int MAX_NAME_LENGTH = 100;
-    private static final int MAX_PRICE = 1000000; // Верхняя граница цены
+    private static final int MAX_PRICE = 1_000_000;
+
+    private ProductValidator() {}
 
     /**
      * Валидация SKU продукта
@@ -71,10 +70,10 @@ public class ProductValidator {
         }
 
         try {
-            double price = Double.parseDouble(priceStr);
+            final double price = Double.parseDouble(priceStr);
             return validatePrice(price);
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Цена должна быть числом. Получено: " + priceStr);
+            throw new IllegalArgumentException("Цена должна быть числом. Получено: " + priceStr, e);
         }
     }
 
@@ -108,7 +107,8 @@ public class ProductValidator {
      * @return новый объект Product
      * @throws IllegalArgumentException если любое из полей невалидно
      */
-    public static Product createProduct(final String sku, final String name, final String priceStr) {
+    public static Product createProduct(
+            final String sku, final String name, final String priceStr) {
         // Валидация всех полей
         validateSku(sku);
         validateName(name);
@@ -130,7 +130,8 @@ public class ProductValidator {
      * @return true если все поля валидны, иначе бросает исключение
      * @throws IllegalArgumentException если любое из полей невалидно
      */
-    public static boolean validateProduct(final String sku, final String name, final String priceStr) {
+    public static boolean validateProduct(
+            final String sku, final String name, final String priceStr) {
         validateSku(sku);
         validateName(name);
         validatePrice(priceStr);
