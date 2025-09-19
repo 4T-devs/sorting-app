@@ -14,7 +14,7 @@ public class MultithreadSorting<T> implements ISortStrategy<T> {
 
     public MultithreadSorting(final ISortStrategy<T> sort) {
         this.sort = sort;
-        this.numThreads = 2;
+        this.numThreads = calculateThreads();
     }
 
     public void setSortStrategy(final ISortStrategy<T> sort) {
@@ -148,4 +148,9 @@ public class MultithreadSorting<T> implements ISortStrategy<T> {
         }
         return baseChunkSize;
     }
+
+    private int calculateThreads() {
+        return Runtime.getRuntime().availableProcessors();
+    }
+
 }
