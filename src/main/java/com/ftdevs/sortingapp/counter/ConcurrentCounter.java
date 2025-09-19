@@ -7,9 +7,6 @@ import java.util.concurrent.*;
 
 public final class ConcurrentCounter {
 
-    // Общий пул потоков
-    private static final ExecutorService EXECUTOR = Executors.newWorkStealingPool();
-
     private ConcurrentCounter() {}
 
     public static <T> int countOccurrences(
@@ -22,6 +19,7 @@ public final class ConcurrentCounter {
         // Размер чанка
         final int chunkSize = (int) Math.ceil((double) size / threads);
 
+        final ExecutorService executor = Executors.newFixedThreadPool(threads);
         final List<Future<Integer>> futures = new ArrayList<>();
 
         for (int i = 0; i < size; i += chunkSize) {
@@ -39,7 +37,7 @@ public final class ConcurrentCounter {
                         return localCount;
                     };
 
-            futures.add(EXECUTOR.submit(task));
+            futures.add(executor.submit(task));
         }
 
         int totalCount = 0;
@@ -53,7 +51,7 @@ public final class ConcurrentCounter {
                 throw new CounterException("Task execution failed", e);
             }
         }
-
+        executor.shutdown();
         return totalCount;
     }
 
