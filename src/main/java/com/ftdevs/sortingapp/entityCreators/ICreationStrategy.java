@@ -1,9 +1,10 @@
 package com.ftdevs.sortingapp.entityCreators;
 
-import com.ftdevs.sortingapp.entities.Builder;
+import com.ftdevs.sortingapp.collections.CustomArrayList;
+import com.ftdevs.sortingapp.model.Product;
 
 public interface ICreationStrategy {
-    String[] createEntities(String input, Class<? extends Builder> type);
+    CustomArrayList<Product> createProducts(String input);
 
     String getMessage();
 }

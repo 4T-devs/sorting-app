@@ -1,6 +1,8 @@
 package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.sorting.InsertionSorting;
+import com.ftdevs.sortingapp.sorting.QuickSort;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class SortSelectionState extends MenuInputState { // Меню выбора алгоритма сортировки
@@ -14,12 +16,14 @@ public class SortSelectionState extends MenuInputState { // Меню выбор�
         }
 
         switch (input) {
-            case 1 -> { // Алгоритм 1
-                // context.setSortStrategy();
+            case 1 -> {
+                context.setSortStrategy(new QuickSort<>());
+                context.setState(new MainMenuState());
                 return true;
             }
-            case 2 -> { // Алгоритм 2
-                // context.setSortStrategy();
+            case 2 -> {
+                context.setSortStrategy(new InsertionSorting<>());
+                context.setState(new MainMenuState());
                 return true;
             }
             case 0 -> {

@@ -1,11 +1,12 @@
 package com.ftdevs.sortingapp.entityCreators;
 
-import com.ftdevs.sortingapp.entities.Builder;
+import com.ftdevs.sortingapp.collections.CustomArrayList;
+import com.ftdevs.sortingapp.model.Product;
 
 public class FileEntityCreator implements ICreationStrategy {
 
     @Override
-    public String[] createEntities(String input, Class<? extends Builder> type) {
+    public CustomArrayList<Product> createProducts(String input) {
         // TODO Переработка метода
         /*
         Path filePath = Paths.get(input);
@@ -21,7 +22,7 @@ public class FileEntityCreator implements ICreationStrategy {
         return values.toArray(new String[values.size()]);
 
         */
-        return new String[0];
+        return new CustomArrayList<>();
     }
 
     @Override

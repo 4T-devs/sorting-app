@@ -1,5 +1,7 @@
 package com.ftdevs.sortingapp;
 
+import java.util.Scanner;
+
 public final class ProductSortingApplication {
 
     private ProductSortingApplication() {}
@@ -11,21 +13,19 @@ public final class ProductSortingApplication {
     private static void run() {
         final ApplicationContext context = new ApplicationContext();
 
-        IOSingleton.getInstance().setOutput(System.out);
-        IOSingleton.getInstance().setInput(System.in);
+        Scanner scanner = new Scanner(System.in);
 
         try {
             while (context.isExit()) {
                 context.printHeader(); // Вывод шапки программы
                 context.printMenu(); // Вывод текущего меню
-                context.setInput(
-                        IOSingleton.getInstance().readLine()); // Получение пользовательского ввода
+                context.setInput(scanner.nextLine()); // Получение пользовательского ввода
                 if (!context.handle())
                     context.printError(); // Вывод ошибки, если пользователь ввел недопустимые
                 // параметры
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 }

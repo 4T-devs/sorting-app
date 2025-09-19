@@ -15,8 +15,6 @@ final class ProductSortingApplicationTest {
         final PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
 
-        IOSingleton.getInstance().setOutput(originalOut);
-
         String input = "0";
         System.setIn(new ByteArrayInputStream(input.getBytes()));
 

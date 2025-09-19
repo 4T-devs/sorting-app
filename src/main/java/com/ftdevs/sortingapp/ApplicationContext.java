@@ -2,25 +2,22 @@ package com.ftdevs.sortingapp;
 
 import com.ftdevs.sortingapp.applicationMenu.MainMenuState;
 import com.ftdevs.sortingapp.applicationMenu.MenuInputState;
-import com.ftdevs.sortingapp.entities.Builder;
-import com.ftdevs.sortingapp.entities.Entity;
+import com.ftdevs.sortingapp.collections.CustomArrayList;
 import com.ftdevs.sortingapp.entityCreators.ICreationStrategy;
-import com.ftdevs.sortingapp.sorting.ISortStrategyPlaceholder;
+import com.ftdevs.sortingapp.model.Product;
+import com.ftdevs.sortingapp.sorting.ISortStrategy;
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 public class ApplicationContext {
     private MenuInputState state;
     private String input;
     private boolean exitFlag = true;
 
-    private Object[] collection;
+    private CustomArrayList<Product> collection;
 
-    private ISortStrategyPlaceholder sortStrategy;
+    private ISortStrategy sortStrategy;
 
     private ICreationStrategy creationStrategy;
-
-    private Class<? extends Builder> entityType;
 
     private Field sortField;
 
@@ -48,19 +45,19 @@ public class ApplicationContext {
         exitFlag = false;
     }
 
-    public void setCollection(final Object... collection) {
-        this.collection = Arrays.copyOf(collection, collection.length);
+    public void setCollection(final CustomArrayList<Product> collection) {
+        this.collection = collection;
     }
 
-    public Object[] getCollection() {
-        return Arrays.copyOf(collection, collection.length);
+    public CustomArrayList<Product> getCollection() {
+        return collection;
     }
 
-    public void setSortStrategy(final ISortStrategyPlaceholder sortStrategy) {
+    public void setSortStrategy(final ISortStrategy sortStrategy) {
         this.sortStrategy = sortStrategy;
     }
 
-    public ISortStrategyPlaceholder getSortStrategy() {
+    public ISortStrategy getSortStrategy() {
         return sortStrategy;
     }
 
@@ -72,41 +69,37 @@ public class ApplicationContext {
         return creationStrategy;
     }
 
-    public void setEntityType(final Class<? extends Builder> entityType) {
-        this.entityType = entityType;
-    }
-
-    public Class<? extends Builder> getEntityType() {
-        return entityType;
-    }
-
     public void printError() {
-        IOSingleton.getInstance().printLine(state.getErrorMessage());
+        System.out.println(state.getErrorMessage());
     }
 
     public ApplicationContext() {
         state = new MainMenuState();
-        collection = new Object[0];
-        entityType = Entity.EntityBuilder.class;
+        collection = new CustomArrayList<>();
     }
 
     public void printObjects() {
-        if (collection != null && collection.length > 0)
-            for (var i : collection) IOSingleton.getInstance().printLine(i.toString());
-        else IOSingleton.getInstance().printLine("Список объектов пуст");
+        if (collection != null && collection.size() > 0)
+            for (var i : collection) System.out.println(i.toString());
+        else System.out.println("Список объектов пуст");
     }
 
     public void sort() {
-        if (collection != null && collection.length > 0) collection = sortStrategy.sort(collection);
+        if (collection != null && collection.size() > 0 && sortStrategy != null) {
+            // sortStrategy.sort(collection, Comparator.comparing();
+            // Можно создать в контексте компаратор для каждого поля, и на ввод давать collection,
+            // comparator
+            System.out.println("[PH]");
+        }
     }
 
     public void printMenu() {
-        IOSingleton.getInstance().printLine(state.getMenu());
+        System.out.println(state.getMenu());
     }
 
     public void printHeader() {
-        IOSingleton.getInstance().printLine("===| Приложение сортировки продуктов |===\n");
-    }
+        System.out.println("===| Приложение сортировки продуктов |===\n");
+    } // \n для того, чтобы отделить шапку от меню
 
     public Field getSortField() {
         return sortField;

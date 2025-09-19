@@ -1,7 +1,6 @@
 package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
-import com.ftdevs.sortingapp.IOSingleton;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class MainMenuState extends MenuInputState {
@@ -16,7 +15,7 @@ public class MainMenuState extends MenuInputState {
 
         switch (input) {
             case 1 -> { // Заполнение данными
-                context.setState(new EntityCreationState());
+                context.setState(new ProductCreationState());
                 return true;
             }
             case 2 -> { // Выбрать алгоритм сортировки
@@ -28,7 +27,7 @@ public class MainMenuState extends MenuInputState {
                 return true;
             }
             case 4 -> { // Поиск
-                context.setState(new EntitySearchState(context));
+                context.setState(new ProductSearchState());
                 return true;
             }
             case 5 -> { // Показать продукты
@@ -39,13 +38,13 @@ public class MainMenuState extends MenuInputState {
                 return true;
             }
             case 7 -> { // Подсчитать вхождения
-                context.setState(new EntityCountingState(context));
+                context.setState(new ProductCountingState());
                 return true;
             }
             case 0 -> { // Выход
                 context.exit();
-                IOSingleton.getInstance().printLine("Завершение работы..");
-                IOSingleton.getInstance().printLine("Exit code 0");
+                System.out.println("Завершение работы..");
+                System.out.println("Exit code 0");
                 return true;
             }
             default -> {

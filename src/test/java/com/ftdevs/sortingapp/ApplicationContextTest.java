@@ -2,8 +2,7 @@ package com.ftdevs.sortingapp;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.ftdevs.sortingapp.applicationMenu.EntitySearchState;
-import com.ftdevs.sortingapp.entities.Entity;
+import com.ftdevs.sortingapp.applicationMenu.ProductSearchState;
 import java.io.*;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,6 @@ final class ApplicationContextTest {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         System.setOut(new PrintStream(outputStream));
-        IOSingleton.getInstance().setOutput(new PrintStream(outputStream));
 
         final ApplicationContext context =
                 new ApplicationContext(); // По умолчанию в контексте задается состояние главного
@@ -26,20 +24,20 @@ final class ApplicationContextTest {
         final String menu1 = outputStream.toString();
         outputStream.reset();
 
-        context.setState(new EntitySearchState(context));
+        context.setState(new ProductSearchState());
         context.printMenu();
         final String menu2 = outputStream.toString();
 
-        IOSingleton.getInstance().printLine(menu1);
-        IOSingleton.getInstance().printLine(menu2);
+        System.out.println(menu1);
+        System.out.println(menu2);
 
         assertNotSame(menu1, menu2, String.format("%s\nnot same as\n%s", menu1, menu2));
     }
 
     @Test
     void applicationExitTest() {
+        System.setOut(System.out);
         final ApplicationContext context = new ApplicationContext();
-        IOSingleton.getInstance().setOutput(System.out);
 
         final String input = "0";
 
@@ -51,38 +49,36 @@ final class ApplicationContextTest {
 
     @Test
     void applicationAddItemsTest() {
-        IOSingleton.getInstance().setOutput(System.out);
+        System.setOut(System.out);
         final ApplicationContext context = new ApplicationContext();
-        final String input = "1 2 10";
+        final String input =
+                "1 3 1"; // 1 Создание объектов, 3 - Ручной ввод, 1 - Количество объектов
         final var commands = input.split(" ");
+        System.setIn(new ByteArrayInputStream("article\nname\n9.99\nstop".getBytes()));
 
         for (String command : commands) {
             context.setInput(command);
             context.handle();
         }
 
-        assertTrue(context.getCollection().length > 0, "Collection has elements");
+        assertTrue(context.getCollection().size() > 0, "Collection is empty");
 
         context.printObjects();
     }
 
     @Test
-    void changeContextEntityTypeTest() {
-        final ApplicationContext context = new ApplicationContext();
-        context.setEntityType(Entity.EntityBuilder.class);
-
-        assertEquals(context.getEntityType(), Entity.EntityBuilder.class, "Types are equal");
-    }
-
-    @Test
     void applicationMenuWalkerTest() { // Тест с обходом всего меню
-        IOSingleton.getInstance().setOutput(System.out);
+        var originalInput = System.out;
+        System.setOut(originalInput);
+
         final ApplicationContext context = new ApplicationContext();
-        final String input = "1 0 2 0 3 4 0 5 6 7 10,1,1 0";
-        for (var c : input.split(" ")) {
+        final String input = "1_0_2_0_3_4_0_5_6_7_ _0";
+        System.setIn(new ByteArrayInputStream("article\nproduct\n3.14".getBytes()));
+
+        for (var c : input.split("_")) {
             context.printHeader();
             context.printMenu();
-            IOSingleton.getInstance().printLine(c);
+            System.out.println(c);
             context.setInput(c);
             context.handle();
         }

@@ -3,7 +3,7 @@ package com.ftdevs.sortingapp.applicationMenu;
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
-public class SortFieldSelectionState extends MenuInputState {
+public class ProductSearchState extends MenuInputState {
     @Override
     public boolean handle(ApplicationContext context) {
         Integer input = InputValidator.tryParseInteger(context.getInput());
@@ -14,15 +14,15 @@ public class SortFieldSelectionState extends MenuInputState {
 
         switch (input) {
             case 1 -> {
-                // TODO Выбор компаратора "Артикул"
+                context.setState(new BinarySearchState(1));
                 return true;
             }
             case 2 -> {
-                // TODO Выбор компаратора "Название"
+                context.setState(new BinarySearchState(2));
                 return true;
             }
             case 3 -> {
-                // TODO Выбор компаратора "Цена"
+                context.setState(new BinarySearchState(3));
                 return true;
             }
             case 0 -> {
@@ -30,17 +30,18 @@ public class SortFieldSelectionState extends MenuInputState {
                 return true;
             }
             default -> {
-                this.errorMessage = "Выбрана недопустимая опция";
+                this.errorMessage = "Выбрана неверная опция";
                 return false;
             }
         }
     }
 
-    public SortFieldSelectionState() {
+    public ProductSearchState() {
         StringBuilder sb = new StringBuilder();
         sb.append("(1) Артикул\n");
         sb.append("(2) Название\n");
         sb.append("(3) Цена\n");
-        sb.append("(0) Отмена\n");
+        sb.append("(0) Назад\n");
+        menuSelectors = sb.toString();
     }
 }
