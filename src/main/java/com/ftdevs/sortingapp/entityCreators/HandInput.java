@@ -26,12 +26,12 @@ public class HandInput implements ICreationStrategy {
         CustomArrayList<Product> collection = new CustomArrayList<>();
 
         while (true) {
+            System.out.println("Введите артикул");
             String input = scanner.nextLine().trim();
             String sku;
             String name;
             String price;
 
-            System.out.println("Введите артикул");
             if (input.equals(exitWord)) {
                 break;
             } else sku = input;

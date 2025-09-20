@@ -54,14 +54,22 @@ final class ApplicationContextTest {
         System.setOut(System.out);
         final ApplicationContext context = new ApplicationContext();
         final String input =
-                "1 3 1"; // 1 Создание объектов, 3 - Ручной ввод, 1 - Количество объектов
+                "1 3 0"; // 1 Создание объектов, 3 - Ручной ввод, 1 - Количество объектов
         final var commands = input.split(" ");
         System.setIn(new ByteArrayInputStream("GLT-648/7742\nПылесос\n9.99\nstop".getBytes()));
 
-        for (String command : commands) {
-            context.setInput(command);
-            context.handle();
+        int commandHead = 0;
+        while (commandHead < commands.length) {
+            context.printHeader();
+            context.printMenu();
+            if (context.isInputNeed()) {
+                System.out.println(commands[commandHead]);
+                context.setInput(commands[commandHead]);
+                commandHead++;
+            }
+            if (!context.handle()) context.printError();
         }
+        System.out.println(context.getCollection().get(0));
 
         assertTrue(context.getCollection().size() > 0, "Collection is empty");
 
