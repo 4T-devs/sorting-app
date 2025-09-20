@@ -1,14 +1,15 @@
 package com.ftdevs.sortingapp.entityCreators;
 
 import com.ftdevs.sortingapp.collections.CustomArrayList;
+import com.ftdevs.sortingapp.collections.CustomList;
 import com.ftdevs.sortingapp.model.Product;
-import com.ftdevs.sortingapp.validation.InputValidator;
+import com.ftdevs.sortingapp.util.ProductValidator;
 import java.util.Scanner;
 
 public class HandInput implements ICreationStrategy {
 
     @Override
-    public CustomArrayList<Product> createProducts(String input) {
+    public CustomList<Product> createProducts(String input) {
         if ("stop".equals(input)) return new CustomArrayList<>();
 
         return handleCreation();
@@ -25,24 +26,27 @@ public class HandInput implements ICreationStrategy {
         CustomArrayList<Product> collection = new CustomArrayList<>();
 
         while (true) {
-            var builder = new Product.Builder();
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
+            String sku;
+            String name;
+            String price;
+
             System.out.println("Введите артикул");
             if (input.equals(exitWord)) {
                 break;
-            } else builder.sku(input);
+            } else sku = input;
             System.out.println("Введите название");
-            input = scanner.nextLine();
+            input = scanner.nextLine().trim();
             if (input.equals(exitWord)) {
                 break;
-            } else builder.name(input);
+            } else name = input;
             System.out.println("Введите цену");
-            input = scanner.nextLine();
+            input = scanner.nextLine().trim();
             if (input.equals(exitWord)) {
                 break;
-            } else builder.price(InputValidator.tryParseDouble(input));
+            } else price = input;
             try {
-                collection.add(builder.build());
+                collection.add(ProductValidator.createProduct(sku, name, price));
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
             }

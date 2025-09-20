@@ -2,7 +2,7 @@ package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.model.Product;
-import com.ftdevs.sortingapp.validation.InputValidator;
+import com.ftdevs.sortingapp.util.ProductValidator;
 import java.util.Scanner;
 
 public class ProductCountingState extends MenuInputState {
@@ -36,17 +36,19 @@ public class ProductCountingState extends MenuInputState {
 
     private Product getProductForCounting() {
         Scanner scanner = new Scanner(System.in);
-        var builder = new Product.Builder();
+        String sku;
+        String name;
+        String price;
 
         System.out.println("Введите артикул:");
-        builder.sku(scanner.nextLine().trim());
+        sku = scanner.nextLine().trim();
 
         System.out.println("Введите название:");
-        builder.name(scanner.nextLine().trim());
+        name = scanner.nextLine().trim();
 
         System.out.println("Введите цену:");
-        builder.price(InputValidator.tryParseDouble(scanner.nextLine().trim()));
+        price = scanner.nextLine().trim();
 
-        return builder.build();
+        return ProductValidator.createProduct(sku, name, price);
     }
 }

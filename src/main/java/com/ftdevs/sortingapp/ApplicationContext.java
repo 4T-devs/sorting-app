@@ -3,17 +3,17 @@ package com.ftdevs.sortingapp;
 import com.ftdevs.sortingapp.applicationMenu.MainMenuState;
 import com.ftdevs.sortingapp.applicationMenu.MenuInputState;
 import com.ftdevs.sortingapp.collections.CustomArrayList;
+import com.ftdevs.sortingapp.collections.CustomList;
 import com.ftdevs.sortingapp.entityCreators.ICreationStrategy;
 import com.ftdevs.sortingapp.model.Product;
 import com.ftdevs.sortingapp.sorting.ISortStrategy;
-import java.lang.reflect.Field;
 
 public class ApplicationContext {
     private MenuInputState state;
     private String input;
     private boolean exitFlag = true;
 
-    private CustomArrayList<Product> collection;
+    private CustomList<Product> collection;
 
     private ISortStrategy sortStrategy;
 
@@ -21,7 +21,7 @@ public class ApplicationContext {
 
     private boolean isInputNeed = true;
 
-    private Field sortField;
+    private boolean isSorted = false;
 
     public boolean handle() {
         return state.handle(this);
@@ -47,11 +47,11 @@ public class ApplicationContext {
         exitFlag = false;
     }
 
-    public void setCollection(final CustomArrayList<Product> collection) {
+    public void setCollection(final CustomList<Product> collection) {
         this.collection = collection;
     }
 
-    public CustomArrayList<Product> getCollection() {
+    public CustomList<Product> getCollection() {
         return collection;
     }
 
@@ -91,7 +91,7 @@ public class ApplicationContext {
             // sortStrategy.sort(collection, Comparator.comparing();
             // Можно создать в контексте компаратор для каждого поля, и на ввод давать collection,
             // comparator
-            System.out.println("[PH]");
+            isSorted = true;
         }
     }
 
@@ -103,19 +103,19 @@ public class ApplicationContext {
         System.out.println("===| Приложение сортировки продуктов |===\n");
     } // \n для того, чтобы отделить шапку от меню
 
-    public Field getSortField() {
-        return sortField;
-    }
-
-    public void setSortField(Field sortField) {
-        this.sortField = sortField;
-    }
-
     public boolean isInputNeed() {
         return isInputNeed;
     }
 
-    public void setInputNeed(boolean isInputNeed) {
+    public void setInputNeed(final boolean isInputNeed) {
         this.isInputNeed = isInputNeed;
+    }
+
+    public void setUnsorted() {
+        isSorted = false;
+    }
+
+    public boolean isSorted() {
+        return isSorted;
     }
 }

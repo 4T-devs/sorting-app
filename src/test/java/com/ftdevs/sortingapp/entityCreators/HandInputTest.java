@@ -14,7 +14,7 @@ final class HandInputTest {
     void handInputTest() {
 
         String input = "2";
-        String iStream = "10232234\nproduct1\n3.33\nstop";
+        String iStream = "AFE-957/6405\nХолодильник\n3.33\nstop";
         InputStream testInput = new ByteArrayInputStream(iStream.getBytes());
 
         System.setOut(System.out);

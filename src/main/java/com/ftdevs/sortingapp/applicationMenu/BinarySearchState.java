@@ -2,6 +2,7 @@ package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.collections.CustomList;
+import com.ftdevs.sortingapp.files.FileManager;
 import com.ftdevs.sortingapp.searchui.SearchService;
 import com.ftdevs.sortingapp.validation.InputValidator;
 import java.util.Optional;
@@ -50,6 +51,7 @@ public class BinarySearchState extends MenuInputState {
             final CustomList<T> products, final Optional<Integer> idxOpt) {
         if (idxOpt.isPresent()) {
             final int idx = idxOpt.get();
+            FileManager.saveSearchResult(products.get(idx), idx);
             System.out.println("Найден объект: " + products.get(idx));
         } else {
             System.out.println("Элемент не найден.");

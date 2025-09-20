@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.ftdevs.sortingapp.applicationMenu.ProductSearchState;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import org.junit.jupiter.api.Test;
 
 final class ApplicationContextTest {
@@ -31,7 +33,7 @@ final class ApplicationContextTest {
         System.out.println(menu1);
         System.out.println(menu2);
 
-        assertNotSame(menu1, menu2, String.format("%s\nnot same as\n%s", menu1, menu2));
+        assertNotSame(menu1, menu2, String.format("%s\n same as\n%s", menu1, menu2));
     }
 
     @Test
@@ -54,7 +56,7 @@ final class ApplicationContextTest {
         final String input =
                 "1 3 1"; // 1 Создание объектов, 3 - Ручной ввод, 1 - Количество объектов
         final var commands = input.split(" ");
-        System.setIn(new ByteArrayInputStream("article\nname\n9.99\nstop".getBytes()));
+        System.setIn(new ByteArrayInputStream("GLT-648/7742\nПылесос\n9.99\nstop".getBytes()));
 
         for (String command : commands) {
             context.setInput(command);
@@ -72,8 +74,8 @@ final class ApplicationContextTest {
         System.setOut(originalInput);
 
         final ApplicationContext context = new ApplicationContext();
-        final String input = "1 0 2 0 3 4 0 5 6 7 0";
-        System.setIn(new ByteArrayInputStream("article\nproduct\n3.14".getBytes()));
+        final String input = "1 0 2 0 3 4 5 6 file 7 0";
+        System.setIn(new ByteArrayInputStream("AFE-957/6405\nНаушники\n3.14".getBytes()));
 
         int commandHead = 0;
         String[] commands = input.split(" ");
@@ -85,9 +87,49 @@ final class ApplicationContextTest {
                 context.setInput(commands[commandHead]);
                 commandHead++;
             }
-            context.handle();
+            if (!context.handle()) context.printError();
         }
 
         assertTrue(!context.isExit(), "Application has not been shutdown");
+    }
+
+    @Test
+    void applicationGenerateAndSaveTest() {
+        var originalInput = System.out;
+        System.setOut(originalInput);
+
+        final ApplicationContext context = new ApplicationContext();
+        final String input = "1 2 10 5 6 file";
+
+        for (var i : input.split(" ")) {
+            context.printHeader();
+            context.printMenu();
+            System.out.println(i);
+            context.setInput(i);
+            if (!context.handle()) context.printError();
+        }
+
+        assertTrue(
+                context.getCollection().size() > 0 && Files.exists(Paths.get("results\\file.csv")),
+                "Ошибка при создании или сохранении продуктов");
+    }
+
+    @Test
+    void applicationReadFile() {
+        var originalInput = System.out;
+        System.setOut(originalInput);
+
+        final ApplicationContext context = new ApplicationContext();
+        final String input = "1 1 file 5";
+
+        for (var i : input.split(" ")) {
+            context.printHeader();
+            context.printMenu();
+            System.out.println(i);
+            context.setInput(i);
+            if (!context.handle()) context.printError();
+        }
+
+        assertTrue(context.getCollection().size() > 0, "Expected collection size must be > 0");
     }
 }

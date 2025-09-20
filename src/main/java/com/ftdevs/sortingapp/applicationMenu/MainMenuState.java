@@ -27,14 +27,20 @@ public class MainMenuState extends MenuInputState {
                 return true;
             }
             case 4 -> { // Поиск
-                context.setState(new ProductSearchState());
-                return true;
+                if (context.isSorted()) {
+                    context.setState(new ProductSearchState());
+                    return true;
+                } else {
+                    errorMessage = "Перед использованием поиска необходимо отсортировать объекты";
+                    return false;
+                }
             }
             case 5 -> { // Показать продукты
                 context.printObjects();
                 return true;
             }
             case 6 -> { // Сохранить в файл
+                context.setState(new SaveProductsState());
                 return true;
             }
             case 7 -> { // Подсчитать вхождения

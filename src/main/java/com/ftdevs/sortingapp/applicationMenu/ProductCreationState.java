@@ -3,6 +3,7 @@ package com.ftdevs.sortingapp.applicationMenu;
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.entityCreators.FileEntityCreator;
 import com.ftdevs.sortingapp.entityCreators.HandInput;
+import com.ftdevs.sortingapp.entityCreators.RandomCreator;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class ProductCreationState extends MenuInputState { // Меню выбора способа создания сущностей
@@ -19,8 +20,7 @@ public class ProductCreationState extends MenuInputState { // Меню выбо�
                 context.setCreationStrategy(new FileEntityCreator());
             }
             case 2 -> { // Случайная генерация объектов
-                // context.setCreationStrategy();
-                System.out.println("Установить генератор");
+                context.setCreationStrategy(new RandomCreator());
             }
             case 3 -> { // Ручное заполнение объектов
                 context.setCreationStrategy(new HandInput());
