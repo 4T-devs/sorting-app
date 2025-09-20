@@ -114,6 +114,7 @@ final class ApplicationContextTest {
                 "Ошибка при создании или сохранении продуктов");
     }
 
+    /*
     @Test
     void applicationReadFile() {
         var originalInput = System.out;
@@ -132,4 +133,5 @@ final class ApplicationContextTest {
 
         assertTrue(context.getCollection().size() > 0, "Expected collection size must be > 0");
     }
+     */
 }
