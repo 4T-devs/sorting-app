@@ -9,9 +9,26 @@
         Simplified PMD ruleset for educational console Java project.
     </description>
 
-    <rule ref="category/java/codestyle.xml"/>
-    <rule ref="category/java/design.xml"/>
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="UseExplicitTypes"/>
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="ShortVariable"/>
+        <exclude name="CallSuperInConstructor"/>
+        <exclude name="OnlyOneReturn"/>
+        <exclude name="LocalVariableCouldBeFinal"/>
+        <exclude name="ControlStatementBraces"/>
+        <exclude name="LinguisticNaming"/>
+        <exclude name="MethodArgumentCouldBeFinal"/>
+        <exclude name="PackageCase"/>
+    </rule>
+    <rule ref="category/java/design.xml">
+        <exclude name="AvoidCatchingGenericException"/>
+        <exclude name="LawOfDemeter"/>
+        <exclude name="CyclomaticComplexity"/>
+    </rule>
     <rule ref="category/java/bestpractices.xml">
         <exclude name="SystemPrintln"/>
+        <exclude name="AvoidPrintStackTrace"/>
+        <exclude name="AvoidReassigningLoopVariables"/>
     </rule>
 </ruleset>
