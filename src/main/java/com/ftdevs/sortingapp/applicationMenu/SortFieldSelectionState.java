@@ -1,6 +1,7 @@
 package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.comparator.ProductComparators;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class SortFieldSelectionState extends MenuInputState {
@@ -14,15 +15,19 @@ public class SortFieldSelectionState extends MenuInputState {
 
         switch (input) {
             case 1 -> {
-                // TODO Выбор компаратора "Артикул"
+                context.setComparator(ProductComparators.BY_SKU);
                 return true;
             }
             case 2 -> {
-                // TODO Выбор компаратора "Название"
+                context.setComparator(ProductComparators.BY_NAME);
                 return true;
             }
             case 3 -> {
-                // TODO Выбор компаратора "Цена"
+                context.setComparator(ProductComparators.BY_PRICE);
+                return true;
+            }
+            case 4 -> {
+                context.setComparator(ProductComparators.CUSTOM_PRICE);
                 return true;
             }
             case 0 -> {
@@ -41,6 +46,7 @@ public class SortFieldSelectionState extends MenuInputState {
         sb.append("(1) Артикул\n");
         sb.append("(2) Название\n");
         sb.append("(3) Цена\n");
+        sb.append("(4) Кастомная сортировка по цене\n");
         sb.append("(0) Отмена\n");
     }
 }

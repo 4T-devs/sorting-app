@@ -4,9 +4,11 @@ import com.ftdevs.sortingapp.applicationMenu.MainMenuState;
 import com.ftdevs.sortingapp.applicationMenu.MenuInputState;
 import com.ftdevs.sortingapp.collections.CustomArrayList;
 import com.ftdevs.sortingapp.collections.CustomList;
+import com.ftdevs.sortingapp.comparator.ProductComparators;
 import com.ftdevs.sortingapp.entityCreators.ICreationStrategy;
 import com.ftdevs.sortingapp.model.Product;
 import com.ftdevs.sortingapp.sorting.ISortStrategy;
+import java.util.Comparator;
 
 public class ApplicationContext {
     private MenuInputState state;
@@ -15,13 +17,15 @@ public class ApplicationContext {
 
     private CustomList<Product> collection;
 
-    private ISortStrategy sortStrategy;
+    private ISortStrategy<Product> sortStrategy;
 
     private ICreationStrategy creationStrategy;
 
     private boolean isInputNeed = true;
 
     private boolean isSorted = false;
+
+    private Comparator<Product> comparator;
 
     public boolean handle() {
         return state.handle(this);
@@ -55,12 +59,8 @@ public class ApplicationContext {
         return collection;
     }
 
-    public void setSortStrategy(final ISortStrategy sortStrategy) {
+    public void setSortStrategy(final ISortStrategy<Product> sortStrategy) {
         this.sortStrategy = sortStrategy;
-    }
-
-    public ISortStrategy getSortStrategy() {
-        return sortStrategy;
     }
 
     public void setCreationStrategy(final ICreationStrategy creationStrategy) {
@@ -78,6 +78,7 @@ public class ApplicationContext {
     public ApplicationContext() {
         state = new MainMenuState();
         collection = new CustomArrayList<>();
+        comparator = ProductComparators.GENERAL;
     }
 
     public void printObjects() {
@@ -88,9 +89,7 @@ public class ApplicationContext {
 
     public void sort() {
         if (collection != null && collection.size() > 0 && sortStrategy != null) {
-            // sortStrategy.sort(collection, Comparator.comparing();
-            // Можно создать в контексте компаратор для каждого поля, и на ввод давать collection,
-            // comparator
+            sortStrategy.sort(collection, comparator);
             isSorted = true;
         }
     }
@@ -117,5 +116,9 @@ public class ApplicationContext {
 
     public boolean isSorted() {
         return isSorted;
+    }
+
+    public void setComparator(Comparator<Product> comparator) {
+        this.comparator = comparator;
     }
 }
