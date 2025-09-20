@@ -23,7 +23,8 @@ public class MainMenuState extends MenuInputState {
                 return true;
             }
             case 3 -> { // Отсортировать по полю
-                context.sort();
+                context.setState(new SortFieldSelectionState());
+                // context.sort();
                 return true;
             }
             case 4 -> { // Поиск

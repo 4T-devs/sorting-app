@@ -16,29 +16,29 @@ public class SortFieldSelectionState extends MenuInputState {
         switch (input) {
             case 1 -> {
                 context.setComparator(ProductComparators.BY_SKU);
-                return true;
             }
             case 2 -> {
                 context.setComparator(ProductComparators.BY_NAME);
-                return true;
             }
             case 3 -> {
                 context.setComparator(ProductComparators.BY_PRICE);
-                return true;
             }
             case 4 -> {
                 context.setComparator(ProductComparators.CUSTOM_PRICE);
-                return true;
             }
             case 0 -> {
                 context.setState(new MainMenuState());
-                return true;
             }
             default -> {
                 this.errorMessage = "Выбрана недопустимая опция";
                 return false;
             }
         }
+
+        context.sort();
+        System.out.println("Продукты отсортированы \n");
+        context.setState(new MainMenuState());
+        return true;
     }
 
     public SortFieldSelectionState() {
@@ -48,5 +48,6 @@ public class SortFieldSelectionState extends MenuInputState {
         sb.append("(3) Цена\n");
         sb.append("(4) Кастомная сортировка по цене\n");
         sb.append("(0) Отмена\n");
+        menuSelectors = sb.toString();
     }
 }
