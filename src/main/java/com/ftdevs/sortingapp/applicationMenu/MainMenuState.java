@@ -24,7 +24,6 @@ public class MainMenuState extends MenuInputState {
             }
             case 3 -> { // Отсортировать по полю
                 context.setState(new SortFieldSelectionState());
-                // context.sort();
                 return true;
             }
             case 4 -> { // Поиск
