@@ -2,6 +2,8 @@ package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.comparator.ProductComparators;
+import com.ftdevs.sortingapp.sorting.strategy.EvenValuesSort;
+import com.ftdevs.sortingapp.sorting.strategy.QuickSort;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class SortFieldSelectionState extends MenuInputState {
@@ -24,7 +26,8 @@ public class SortFieldSelectionState extends MenuInputState {
                 context.setComparator(ProductComparators.BY_PRICE);
             }
             case 4 -> {
-                context.setComparator(ProductComparators.CUSTOM_PRICE);
+                context.setSortStrategy(
+                        new EvenValuesSort<>(new QuickSort<>(), (c) -> (int) c.getPrice()));
             }
             case 0 -> {
                 context.setState(new MainMenuState());
