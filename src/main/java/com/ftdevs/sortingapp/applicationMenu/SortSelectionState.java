@@ -2,9 +2,9 @@ package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.sorting.InsertionSorting;
-import com.ftdevs.sortingapp.sorting.MultithreadSorting;
 import com.ftdevs.sortingapp.sorting.QuickSort;
 import com.ftdevs.sortingapp.validation.InputValidator;
+import com.ftdevs.sortingapp.sorting.MultithreadSorting;
 
 public class SortSelectionState extends MenuInputState { // Меню выбора алгоритма сортировки
 
