@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import com.ftdevs.sortingapp.collections.CustomArrayList;
 import com.ftdevs.sortingapp.collections.CustomList;
+import com.ftdevs.sortingapp.sorting.strategy.ISortStrategy;
+import com.ftdevs.sortingapp.sorting.strategy.InsertionSorting;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -17,6 +19,7 @@ final class MultithreadSortingTest {
     private Comparator<Integer> comparator;
     private CustomList<Integer> customList;
     private List<Integer> expectedList;
+    private ISortStrategy<Integer> sortStrategy;
 
     @SuppressWarnings("PMD.LongVariable")
     private MultithreadSorting<Integer> multithreadSorting;
@@ -25,15 +28,15 @@ final class MultithreadSortingTest {
 
     @BeforeEach
     void init() {
-        final ISortStrategy<Integer> sortStrategy = new InsertionSorting<>();
+        sortStrategy = new InsertionSorting<>();
         comparator = Integer::compareTo;
         customList = new CustomArrayList<>();
         expectedList = new ArrayList<>();
-        multithreadSorting = new MultithreadSorting<>(sortStrategy);
     }
 
     @Test
     void testEmptyListSort() {
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         assertDoesNotThrow(
                 () -> multithreadSorting.sort(customList, comparator),
                 "Sorting must handle an empty list");
@@ -44,7 +47,7 @@ final class MultithreadSortingTest {
     void testSingleElementSort() {
         customList.add(42);
         expectedList.add(42);
-
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
 
@@ -54,6 +57,7 @@ final class MultithreadSortingTest {
     @Test
     void testSmallArray() {
         fillArraysWithRandom(customList, expectedList, 9);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
 
@@ -63,6 +67,7 @@ final class MultithreadSortingTest {
     @Test
     void testLargeArray() {
         fillArraysWithRandom(customList, expectedList, 100_005);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
 
@@ -72,7 +77,7 @@ final class MultithreadSortingTest {
     @Test
     void testReversedOrder() {
         fillArrays(customList, expectedList, 1500, 1, -1);
-
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
@@ -82,6 +87,7 @@ final class MultithreadSortingTest {
     void testSortWithDuplicatesInList() {
         final int[] duplicates = {1, 5, 7, 7, 2, 3, 10, 100, 90, 5, 1, 3, 1, 5, 0, 30, 5};
         addToCollection(customList, expectedList, duplicates);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
@@ -94,6 +100,7 @@ final class MultithreadSortingTest {
             20, -1, 50, -3, -4, 200, -60, 347, -47, -3, -1, 0, 0, 2, 4, -9, -43
         };
         addToCollection(customList, expectedList, arrWithNegatives);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
@@ -101,6 +108,7 @@ final class MultithreadSortingTest {
 
     @Test
     void testSortWithNullList() {
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         assertDoesNotThrow(() -> multithreadSorting.sort(null, comparator));
     }
 
@@ -109,6 +117,7 @@ final class MultithreadSortingTest {
     void testSortIdenticalElements() {
         final int[] arrWithIdenticalElements = {10, 10, 10, 10, 10, 10};
         addToCollection(customList, expectedList, arrWithIdenticalElements);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
@@ -116,6 +125,7 @@ final class MultithreadSortingTest {
 
     @Test
     void testSortWithNullComparator() {
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         assertDoesNotThrow(
                 () -> multithreadSorting.sort(customList, null),
                 "Sorting must handle null comparator");
@@ -124,7 +134,7 @@ final class MultithreadSortingTest {
     @Test
     void testSortWithThreeThreads() {
         fillArraysWithRandom(customList, expectedList, 1000);
-        multithreadSorting.setNumThreads(3);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
@@ -133,7 +143,7 @@ final class MultithreadSortingTest {
     @Test
     void testSortWithFourThreads() {
         fillArraysWithRandom(customList, expectedList, 1011);
-        multithreadSorting.setNumThreads(4);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
@@ -142,7 +152,7 @@ final class MultithreadSortingTest {
     @Test
     void testSortWithThreadsMoreThanElements() {
         fillArraysWithRandom(customList, expectedList, 1011);
-        multithreadSorting.setNumThreads(1050);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
@@ -151,7 +161,7 @@ final class MultithreadSortingTest {
     @Test
     void testSortWithNegativeNumberOfThreads() {
         fillArraysWithRandom(customList, expectedList, 1011);
-        multithreadSorting.setNumThreads(-10);
+        multithreadSorting = MultithreadSorting.createOptimal(sortStrategy, customList.size());
         multithreadSorting.sort(customList, comparator);
         expectedList.sort(comparator);
         assertIterableEquals(expectedList, customList, ARRAYS_NOT_EQUAL);
