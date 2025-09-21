@@ -149,10 +149,7 @@ public final class FileManager {
             }
             case ADD_HEAD -> {
                 try {
-                    Files.write(
-                            path,
-                            "sku,name,price\n".getBytes(),
-                            StandardOpenOption.WRITE);
+                    Files.write(path, "sku,name,price\n".getBytes(), StandardOpenOption.WRITE);
                     saveByMode(products, path, SaveMode.APPEND);
                 } catch (IOException ex) {
                     System.out.println(ex.getMessage());

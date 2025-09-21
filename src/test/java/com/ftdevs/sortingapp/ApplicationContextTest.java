@@ -81,7 +81,7 @@ final class ApplicationContextTest {
         System.setOut(originalInput);
 
         final ApplicationContext context = new ApplicationContext();
-        final String input = "1 0 2 0 3 4 5 6 file 7 0";
+        final String input = "1 0 2 0 3 4 5 6 7 file 8 0";
         System.setIn(new ByteArrayInputStream("AFE-957/6405\nНаушники\n3.14".getBytes()));
 
         int commandHead = 0;
