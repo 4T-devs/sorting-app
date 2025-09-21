@@ -53,8 +53,7 @@ final class ApplicationContextTest {
     void applicationAddItemsTest() {
         System.setOut(System.out);
         final ApplicationContext context = new ApplicationContext();
-        final String input =
-                "1 3 0"; // 1 Создание объектов, 3 - Ручной ввод, 1 - Количество объектов
+        final String input = "1 3 0"; // 1 Создание объектов, 3 - Ручной ввод, 0 - Выход
         final var commands = input.split(" ");
         System.setIn(new ByteArrayInputStream("GLT-648/7742\nПылесос\n9.99\nstop".getBytes()));
 

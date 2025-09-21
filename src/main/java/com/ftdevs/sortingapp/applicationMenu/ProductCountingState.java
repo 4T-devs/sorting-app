@@ -21,7 +21,9 @@ public class ProductCountingState extends MenuInputState {
 
         int counter = 0;
         for (var item : context.getCollection()) {
-            if (product.compareTo(item) == 0) counter++;
+            if (product.getSku().equals(item.getSku())
+                    && product.getName().equals(item.getName())
+                    && product.getPrice() == item.getPrice()) counter++;
         }
 
         System.out.println(String.format("Количество заданных объектов: %d", counter));

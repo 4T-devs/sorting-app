@@ -2,6 +2,7 @@ package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
 import com.ftdevs.sortingapp.sorting.InsertionSorting;
+import com.ftdevs.sortingapp.sorting.MultithreadSorting;
 import com.ftdevs.sortingapp.sorting.QuickSort;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
@@ -17,12 +18,12 @@ public class SortSelectionState extends MenuInputState { // Меню выбор�
 
         switch (input) {
             case 1 -> {
-                context.setSortStrategy(new QuickSort<>());
+                context.setSortStrategy(new MultithreadSorting<>(new QuickSort<>()));
                 context.setState(new MainMenuState());
                 return true;
             }
             case 2 -> {
-                context.setSortStrategy(new InsertionSorting<>());
+                context.setSortStrategy(new MultithreadSorting<>(new InsertionSorting<>()));
                 context.setState(new MainMenuState());
                 return true;
             }

@@ -1,6 +1,7 @@
 package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.comparator.ProductComparators;
 import com.ftdevs.sortingapp.validation.InputValidator;
 
 public class MainMenuState extends MenuInputState {
@@ -26,7 +27,12 @@ public class MainMenuState extends MenuInputState {
                 context.setState(new SortFieldSelectionState());
                 return true;
             }
-            case 4 -> { // Поиск
+            case 4 -> { // Отсортировать по умолчанию
+                context.setComparator(ProductComparators.GENERAL);
+                context.sort();
+                return true;
+            }
+            case 5 -> { // Поиск
                 if (context.isSorted()) {
                     context.setState(new ProductSearchState());
                     return true;
@@ -35,15 +41,15 @@ public class MainMenuState extends MenuInputState {
                     return false;
                 }
             }
-            case 5 -> { // Показать продукты
+            case 6 -> { // Показать продукты
                 context.printObjects();
                 return true;
             }
-            case 6 -> { // Сохранить в файл
+            case 7 -> { // Сохранить в файл
                 context.setState(new SaveProductsState());
                 return true;
             }
-            case 7 -> { // Подсчитать вхождения
+            case 8 -> { // Подсчитать вхождения
                 context.setInputNeed(false);
                 context.setState(new ProductCountingState());
                 return true;
@@ -66,10 +72,11 @@ public class MainMenuState extends MenuInputState {
         sb.append("(1) Заполнить данные\n")
                 .append("(2) Выбор алгоритма сортировки\n")
                 .append("(3) Отсортировать по полю\n")
-                .append("(4) Поиск\n")
-                .append("(5) Показать продукты\n")
-                .append("(6) Сохранить в файл\n")
-                .append("(7) Подсчитать вхождения\n")
+                .append("(4) Сортировка по умолчанию\n")
+                .append("(5) Поиск\n")
+                .append("(6) Показать продукты\n")
+                .append("(7) Сохранить в файл\n")
+                .append("(8) Подсчитать вхождения\n")
                 .append("(0) Выход\n");
         menuSelectors = sb.toString();
     }
