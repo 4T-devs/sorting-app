@@ -7,7 +7,7 @@ import com.ftdevs.sortingapp.collections.CustomList;
 import com.ftdevs.sortingapp.comparator.ProductComparators;
 import com.ftdevs.sortingapp.entityCreators.ICreationStrategy;
 import com.ftdevs.sortingapp.model.Product;
-import com.ftdevs.sortingapp.sorting.ISortStrategy;
+import com.ftdevs.sortingapp.sorting.strategy.ISortStrategy;
 import java.util.Comparator;
 
 public class ApplicationContext {
