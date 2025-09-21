@@ -8,15 +8,16 @@ import com.ftdevs.sortingapp.comparator.ProductComparators;
 import com.ftdevs.sortingapp.model.Product;
 import com.ftdevs.sortingapp.sorting.strategy.EvenValuesSort;
 import com.ftdevs.sortingapp.sorting.strategy.QuickSort;
+import java.util.Comparator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Comparator;
 
 class EvenValuesSortTest {
     private EvenValuesSort<Product> evenSort;
     private CustomList<Product> actuaList;
-    private Comparator<Product> productComparator = ProductComparators.BY_PRICE;
+
+    @SuppressWarnings("PMD.LongVariable")
+    private static final Comparator<Product> PRODUCT_COMPARATOR = ProductComparators.BY_PRICE;
 
     @BeforeEach
     void init() {
@@ -27,21 +28,21 @@ class EvenValuesSortTest {
     @Test
     void testFewElements() {
         CustomList<Product> expectedList = fillList(actuaList);
-        evenSort.sort(actuaList, productComparator);
+        evenSort.sort(actuaList, PRODUCT_COMPARATOR);
         assertIterableEquals(expectedList, actuaList);
     }
 
     @Test
     void testOnlyEvens() {
         CustomList<Product> expectedList = fillOnlyEvens(actuaList);
-        evenSort.sort(actuaList, productComparator);
+        evenSort.sort(actuaList, PRODUCT_COMPARATOR);
         assertIterableEquals(expectedList, actuaList);
     }
 
     @Test
     void testOnlyOdds() {
         CustomList<Product> expectedList = fillOnlyOdds(actuaList);
-        evenSort.sort(actuaList, productComparator);
+        evenSort.sort(actuaList, PRODUCT_COMPARATOR);
 
         assertIterableEquals(expectedList, actuaList);
     }
@@ -53,7 +54,7 @@ class EvenValuesSortTest {
 
         actualList.add(Product.builder().sku("1").name("1").price(30).build());
         expectedList.add(Product.builder().sku("1").name("1").price(30).build());
-        evenSort.sort(actualList, productComparator);
+        evenSort.sort(actualList, PRODUCT_COMPARATOR);
 
         assertIterableEquals(expectedList, actualList);
     }
@@ -64,7 +65,7 @@ class EvenValuesSortTest {
         CustomList<Product> actualList = new CustomArrayList<>();
 
         actualList.add(Product.builder().sku("1").name("1").price(31).build());
-        evenSort.sort(actualList, productComparator);
+        evenSort.sort(actualList, PRODUCT_COMPARATOR);
         expectedList.add(Product.builder().sku("1").name("1").price(31).build());
 
         assertIterableEquals(expectedList, actualList);
@@ -77,7 +78,7 @@ class EvenValuesSortTest {
 
         actualList.add(Product.builder().sku("1").name("1").price(30).build());
         actualList.add(Product.builder().sku("1").name("1").price(35).build());
-        evenSort.sort(actualList, productComparator);
+        evenSort.sort(actualList, PRODUCT_COMPARATOR);
 
         expectedList.add(Product.builder().sku("1").name("1").price(30).build());
         expectedList.add(Product.builder().sku("1").name("1").price(35).build());
@@ -85,9 +86,7 @@ class EvenValuesSortTest {
         assertIterableEquals(expectedList, actualList);
     }
 
-
     /**
-     *
      * @param list
      * @return возвращает отсортированный список(для проверки)
      */
@@ -156,5 +155,4 @@ class EvenValuesSortTest {
         list.stream().forEach(expectedList::add);
         return expectedList;
     }
-
 }
