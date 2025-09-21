@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.ftdevs.sortingapp.collections.CustomArrayList;
 import com.ftdevs.sortingapp.collections.CustomList;
 import com.ftdevs.sortingapp.model.Product;
+import com.ftdevs.sortingapp.sorting.strategy.QuickSort;
 import java.util.Comparator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

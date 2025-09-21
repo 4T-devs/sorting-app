@@ -1,4 +1,4 @@
-package com.ftdevs.sortingapp.sorting;
+package com.ftdevs.sortingapp.sorting.strategy;
 
 import com.ftdevs.sortingapp.collections.CustomList;
 import java.util.Comparator;
