@@ -117,7 +117,7 @@ final class ApplicationContextTest {
         }
 
         assertTrue(
-                context.getCollection().size() > 0 && Files.exists(Paths.get("results\\file.csv")),
+                context.getCollection().size() > 0 && Files.exists(Paths.get("results/file.csv")),
                 "Ошибка при создании или сохранении продуктов");
     }
 
