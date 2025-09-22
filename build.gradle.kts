@@ -109,7 +109,6 @@ spotless {
         googleJavaFormat("1.28.0").aosp()
         trimTrailingWhitespace()
         endWithNewline()
-        toggleOffOn()
     }
 }
 

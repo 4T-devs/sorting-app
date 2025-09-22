@@ -140,6 +140,11 @@ public class CustomArrayList<T> implements CustomList<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
     @SuppressWarnings("PMD.MethodArgumentCouldBeFinal")
     public void forEach(Consumer<? super T> action) {
         for (int i = 0; i < size; i++) {

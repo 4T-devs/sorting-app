@@ -2,154 +2,235 @@ package com.ftdevs.sortingapp.sorting;
 
 import com.ftdevs.sortingapp.collections.CustomArrayList;
 import com.ftdevs.sortingapp.collections.CustomList;
+import com.ftdevs.sortingapp.sorting.strategy.ISortStrategy;
+import com.ftdevs.sortingapp.sorting.support.ChunkMerger;
+import com.ftdevs.sortingapp.sorting.util.DataCopier;
+import com.ftdevs.sortingapp.sorting.util.DataSplitter;
 import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.concurrent.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import lombok.NonNull;
 
-public class MultithreadSorting<T> implements ISortStrategy<T> {
-    private ISortStrategy<T> sort;
-    private Comparator<T> comparator;
-    private int numThreads;
+public final class MultithreadSorting<T> implements ISortStrategy<T> {
+    private static final Logger LOGGER = Logger.getLogger(MultithreadSorting.class.getName());
 
-    public MultithreadSorting(final ISortStrategy<T> sort) {
-        this.sort = sort;
-        this.numThreads = calculateThreads();
+    // Конфиги
+    private static final int MIN_MULTI_SIZE = 1000;
+    private static final int MIN_CHUNK_SIZE = 250;
+    private static final int MAX_THREADS = 8;
+
+    // Иммутабельные поля
+    private final ISortStrategy<T> sortStrategy;
+    private final int numThreads;
+    private final TaskExecutor<T> taskExecutor;
+    private final ChunkMerger<T> chunkMerger;
+
+    // Стандартный конструктор с определением максимального количества потоков
+    public MultithreadSorting(final ISortStrategy<T> sortStrategy) {
+        this(sortStrategy, Runtime.getRuntime().availableProcessors());
     }
 
-    public void setSortStrategy(final ISortStrategy<T> sort) {
-        this.sort = sort;
+    // Конструктор с явным указанием количества потоков
+    public MultithreadSorting(final ISortStrategy<T> sortStrategy, final int numThreads) {
+        if (sortStrategy == null) {
+            throw new IllegalArgumentException("SortStrategy не может быть null");
+        }
+
+        this.sortStrategy = sortStrategy;
+        this.numThreads = ThreadCalculator.validateAndNormalizeThreadCount(numThreads);
+        this.taskExecutor = new TaskExecutor<>(sortStrategy);
+        this.chunkMerger = new ChunkMerger<>();
+
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.log(Level.INFO, "Создан MultithreadSorting с {0} потоками", this.numThreads);
+        }
     }
 
-    public void setNumThreads(final int numThreads) {
-        this.numThreads = numThreads <= 0 ? 1 : numThreads;
-    }
-
-    public int getNumThreads() {
-        return numThreads;
-    }
-
-    public ISortStrategy<T> getSortStrategy() {
-        return sort;
+    // Фабричный метод для создания экземпляра с оптимальным количеством потоков для данного размера
+    public static <T> MultithreadSorting<T> createOptimal(
+            final ISortStrategy<T> sortStrategy, final int expectedDataSize) {
+        final int optimalThreads = ThreadCalculator.calculateOptimalThreads(expectedDataSize);
+        return new MultithreadSorting<>(sortStrategy, optimalThreads);
     }
 
     @Override
-    @SuppressWarnings("PMD.AvoidPrintStackTrace")
     public void sort(final CustomList<T> list, final Comparator<T> comparator) {
-        this.comparator = comparator;
-
         if (list == null || list.size() <= 1 || comparator == null) {
             return;
         }
 
-        final CustomList<CustomList<T>> sortedLists = new CustomArrayList<>();
-        try (ExecutorService executorService = Executors.newFixedThreadPool(numThreads); ) {
+        if (shouldUseSingleThread(list)) {
+            performSingleThreadSort(list, comparator);
+        } else {
+            performMultithreadSort(list, comparator);
+        }
+    }
 
-            final CustomList<CustomList<T>> lists = divideList(list);
+    private boolean shouldUseSingleThread(final CustomList<T> list) {
+        final boolean useSingleThread;
+        if (list.size() < MIN_MULTI_SIZE || numThreads <= 1) {
+            useSingleThread = true;
+        } else {
+            final int optimalThreads = ThreadCalculator.calculateOptimalThreads(list.size());
+            final int chunkSize = list.size() / optimalThreads;
+            useSingleThread = chunkSize < MIN_CHUNK_SIZE;
+        }
+        return useSingleThread;
+    }
+
+    private void performSingleThreadSort(final CustomList<T> list, final Comparator<T> comparator) {
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.log(Level.INFO, "Однопоточная сортировка для {0} элементов", list.size());
+        }
+        sortStrategy.sort(list, comparator);
+    }
+
+    private void performMultithreadSort(final CustomList<T> list, final Comparator<T> comparator) {
+        final int optimalThreads = ThreadCalculator.calculateOptimalThreads(list.size());
+
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.log(
+                    Level.INFO,
+                    "Многопоточная сортировка: элементов={0}, потоков={1}",
+                    new Object[] {list.size(), optimalThreads});
+        }
+
+        try {
+            final CustomList<CustomList<T>> chunks = DataSplitter.divideList(list, optimalThreads);
+            final CustomList<CustomList<T>> sortedChunks =
+                    taskExecutor.executeSortingTasks(chunks, comparator, optimalThreads);
+            final CustomList<T> mergedResult =
+                    chunkMerger.mergeSortedChunks(sortedChunks, comparator);
+
+            DataCopier.copyResult(mergedResult, list);
+
+        } catch (ExecutionException e) {
+            LOGGER.log(Level.SEVERE, "Ошибка выполнения многопоточной сортировки", e);
+            fallbackToSingleThreadSort(list, comparator);
+        } catch (InterruptedException e) {
+            LOGGER.log(Level.WARNING, "Многопоточная сортировка прервана", e);
+            Thread.currentThread().interrupt();
+            fallbackToSingleThreadSort(list, comparator);
+        }
+    }
+
+    private void fallbackToSingleThreadSort(
+            final CustomList<T> list, final Comparator<T> comparator) {
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.log(Level.INFO, "Fallback на однопоточную сортировку");
+        }
+        sortStrategy.sort(list, comparator);
+    }
+
+    // Класс для расчета оптимального количества потоков
+    /* default */ static final class ThreadCalculator {
+        private ThreadCalculator() {}
+
+        /* default */ static int calculateOptimalThreads(final int dataSize) {
+            final int threadCount;
+            if (dataSize < MIN_MULTI_SIZE) {
+                threadCount = 1;
+            } else {
+                final int availableProc = Runtime.getRuntime().availableProcessors();
+                final int threadsOnData = dataSize / MIN_CHUNK_SIZE;
+                threadCount = Math.min(availableProc, Math.min(MAX_THREADS, threadsOnData));
+            }
+
+            return threadCount;
+        }
+
+        /* default */ static int validateAndNormalizeThreadCount(final int requestedThreads) {
+            final int threadCount;
+            if (requestedThreads <= 0) {
+                threadCount = 1;
+            } else {
+                threadCount = Math.min(requestedThreads, MAX_THREADS);
+            }
+            return threadCount;
+        }
+    }
+
+    // Класс для выполнения задач сортировки в потоках
+    /* default */ static final class TaskExecutor<T> {
+        private final ISortStrategy<T> sortStrategy;
+
+        /* default */ TaskExecutor(final ISortStrategy<T> sortStrategy) {
+            this.sortStrategy = sortStrategy;
+        }
+
+        /* default */ CustomList<CustomList<T>> executeSortingTasks(
+                final CustomList<CustomList<T>> chunks,
+                final Comparator<T> comparator,
+                final int threadCount)
+                throws InterruptedException, ExecutionException {
+
+            try (ExecutorService executorService = createExecutorService(threadCount)) {
+                final CustomList<Future<CustomList<T>>> futures =
+                        submitSortingTasks(chunks, comparator, executorService);
+                return collectSortedResults(futures);
+            }
+        }
+
+        private ExecutorService createExecutorService(final int threadCount) {
+            final ThreadFactory threadFactory = new SortingThreadFactory();
+            return Executors.newFixedThreadPool(threadCount, threadFactory);
+        }
+
+        private CustomList<Future<CustomList<T>>> submitSortingTasks(
+                final CustomList<CustomList<T>> chunks,
+                final Comparator<T> comparator,
+                final ExecutorService executorService) {
+
             final CustomList<Future<CustomList<T>>> futures = new CustomArrayList<>();
 
-            // Добавление задач в ThreadPool
-            for (int i = 0; i < numThreads; i++) {
-                final int finalI = i;
+            for (int i = 0; i < chunks.size(); i++) {
+                final int chunkIndex = i;
                 futures.add(
                         executorService.submit(
                                 () -> {
-                                    sort.sort(lists.get(finalI), comparator);
-                                    return lists.get(finalI);
+                                    final CustomList<T> chunk = chunks.get(chunkIndex);
+                                    sortStrategy.sort(chunk, comparator);
+                                    return chunk;
                                 }));
             }
 
-            // Ожидание пока все потоки выполнят сортировку
-            for (int i = 0; i < numThreads; i++) {
-                sortedLists.add(futures.get(i).get());
+            return futures;
+        }
+
+        private CustomList<CustomList<T>> collectSortedResults(
+                final CustomList<Future<CustomList<T>>> futures)
+                throws InterruptedException, ExecutionException {
+
+            final CustomList<CustomList<T>> sortedLists = new CustomArrayList<>();
+
+            for (int i = 0; i < futures.size(); i++) {
+                try {
+                    sortedLists.add(futures.get(i).get());
+                } catch (InterruptedException e) {
+                    LOGGER.log(Level.WARNING, "Поток прерван при ожидании результата", e);
+                    Thread.currentThread().interrupt();
+                    throw e;
+                } catch (ExecutionException e) {
+                    LOGGER.log(Level.SEVERE, "Ошибка выполнения задачи сортировки", e);
+                    throw e;
+                }
             }
 
-            // Слияние отсортированных списков
-            final CustomList<T> result = mergeLists(sortedLists);
-
-            // Копирование в исходный массив значений из отсортированного
-            for (int i = 0; i < result.size(); i++) {
-                list.set(i, result.get(i));
-            }
-
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            return sortedLists;
         }
     }
 
-    private CustomList<CustomList<T>> divideList(final CustomList<T> list) {
-        final CustomList<CustomList<T>> lists = new CustomArrayList<>();
-        final int baseChunkSize = getBaseChunkSize(list);
-        final int remainingElements = list.size() % numThreads;
+    // ThreadFactory для создания именованных потоков
+    private static final class SortingThreadFactory implements ThreadFactory {
+        private int threadNumber = 0;
 
-        int startIndex = 0;
-        for (int i = 0; i < numThreads; i++) {
-            final int chunkSize = baseChunkSize + (i < remainingElements ? 1 : 0);
-
-            final CustomList<T> threadList = new CustomArrayList<>(chunkSize);
-            for (int j = 0; j < chunkSize; j++) {
-                threadList.add(list.get(startIndex + j));
-            }
-            lists.add(threadList);
-            startIndex += chunkSize;
+        @Override
+        public Thread newThread(final @NonNull Runnable runnable) {
+            final Thread thread = new Thread(runnable, "MultiSort-Worker-" + (++threadNumber));
+            thread.setDaemon(false);
+            thread.setPriority(Thread.NORM_PRIORITY);
+            return thread;
         }
-        return lists;
-    }
-
-    @SuppressWarnings("PMD.ShortClassName")
-    private CustomList<T> mergeLists(final CustomList<CustomList<T>> sortedLists) {
-
-        class Node {
-            /* default */ final T value;
-            /* default */ final int listId;
-            /* default */ int valuePos;
-
-            public Node(final T value, final int listId, final int valuePos) {
-                this.value = value;
-                this.listId = listId;
-                this.valuePos = valuePos;
-            }
-        }
-
-        final Comparator<Node> nodeComparator =
-                (node1, node2) -> comparator.compare(node1.value, node2.value);
-        final CustomList<T> result = new CustomArrayList<>();
-        final int numOfLists = sortedLists.size();
-        final Queue<Node> queue = new PriorityQueue<>(nodeComparator);
-
-        for (int i = 0; i < numOfLists; i++) {
-            final T value = sortedLists.get(i).get(0);
-            queue.add(new Node(value, i, 0));
-        }
-
-        while (!queue.isEmpty()) {
-            final Node minValue = queue.poll();
-            result.add(minValue.value);
-            final int listId = minValue.listId;
-            final int listSize = sortedLists.get(listId).size();
-            final int newValuePos = minValue.valuePos < (listSize - 1) ? ++minValue.valuePos : -1;
-
-            if (newValuePos < 0) {
-                continue;
-            }
-
-            final T newValue = sortedLists.get(listId).get(newValuePos);
-            final Node nextToQueue = new Node(newValue, listId, newValuePos);
-            queue.add(nextToQueue);
-        }
-        return result;
-    }
-
-    private int getBaseChunkSize(final CustomList<T> list) {
-        int baseChunkSize = list.size() / numThreads;
-        if (list.size() < numThreads) {
-            setNumThreads(1);
-            baseChunkSize = list.size();
-        }
-        return baseChunkSize;
-    }
-
-    private int calculateThreads() {
-        return Runtime.getRuntime().availableProcessors();
     }
 }

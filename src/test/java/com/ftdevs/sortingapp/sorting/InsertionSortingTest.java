@@ -3,6 +3,8 @@ package com.ftdevs.sortingapp.sorting;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.ftdevs.sortingapp.collections.CustomArrayList;
+import com.ftdevs.sortingapp.sorting.strategy.ISortStrategy;
+import com.ftdevs.sortingapp.sorting.strategy.InsertionSorting;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;

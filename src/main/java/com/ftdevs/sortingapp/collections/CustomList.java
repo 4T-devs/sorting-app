@@ -14,4 +14,6 @@ public interface CustomList<T> extends Iterable<T> {
     int size();
 
     Stream<T> stream();
+
+    boolean isEmpty();
 }
