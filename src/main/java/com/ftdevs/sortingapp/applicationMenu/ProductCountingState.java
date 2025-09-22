@@ -1,6 +1,7 @@
 package com.ftdevs.sortingapp.applicationMenu;
 
 import com.ftdevs.sortingapp.ApplicationContext;
+import com.ftdevs.sortingapp.counter.ConcurrentCounter;
 import com.ftdevs.sortingapp.model.Product;
 import com.ftdevs.sortingapp.util.ProductValidator;
 import java.util.Scanner;
@@ -19,12 +20,7 @@ public class ProductCountingState extends MenuInputState {
             }
         }
 
-        int counter = 0;
-        for (var item : context.getCollection()) {
-            if (product.getSku().equals(item.getSku())
-                    && product.getName().equals(item.getName())
-                    && product.getPrice() == item.getPrice()) counter++;
-        }
+        int counter = ConcurrentCounter.countOccurrences(context.getCollection(), product, 2);
 
         System.out.println(String.format("Количество заданных объектов: %d", counter));
         context.setState(new MainMenuState());
