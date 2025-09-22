@@ -106,7 +106,7 @@ final class ApplicationContextTest {
         System.setOut(originalInput);
 
         final ApplicationContext context = new ApplicationContext();
-        final String input = "1 2 10 5 6 file";
+        final String input = "1 2 10 5 7 file";
 
         for (var i : input.split(" ")) {
             context.printHeader();
