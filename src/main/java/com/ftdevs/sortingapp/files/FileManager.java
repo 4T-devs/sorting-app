@@ -17,8 +17,8 @@ import java.util.Locale;
 
 public final class FileManager {
 
-    private static final String INPUT_DIR = "data\\";
-    private static final String OUTPUT_DIR = "results\\";
+    private static final String INPUT_DIR = "data/";
+    private static final String OUTPUT_DIR = "results/";
 
     private static final String[] PRODUCT_FIELDS = {"sku", "name", "price"};
 
