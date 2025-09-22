@@ -26,6 +26,7 @@ public class SortFieldSelectionState extends MenuInputState {
                 context.setComparator(ProductComparators.BY_PRICE);
             }
             case 4 -> {
+                context.setComparator(ProductComparators.BY_PRICE);
                 context.setSortStrategy(
                         new EvenValuesSort<>(new QuickSort<>(), (c) -> (int) c.getPrice()));
             }
